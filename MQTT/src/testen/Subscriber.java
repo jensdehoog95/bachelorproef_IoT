@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import de.dobermai.eclipsemagazin.paho.client.util.Utils;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import deleteFiles.*;
 
 /**
  * @author Dominik Obermaier
@@ -79,8 +80,11 @@ public class Subscriber {
             System.exit(1);
         }
     }
-
-    public static void main(String... args) throws IOException {
+ 
+    public static void main(String... args) throws IOException{
+    	//Delete files before startup
+    	File directory = new File("logData.txt");
+    	CrunchifyDeleteFiles.deleteThisFile(directory);
     	int test = 0;
     	String topic = "home/#"; //choose between "home/#", "home/brightness" and "home/temperature"
         final Subscriber subscriber = new Subscriber();

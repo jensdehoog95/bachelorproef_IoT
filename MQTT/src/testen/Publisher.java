@@ -1,16 +1,13 @@
 package testen;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-
+import deleteFiles.*;
 import org.eclipse.paho.client.mqttv3.*;
-
 import de.dobermai.eclipsemagazin.paho.client.util.Utils;
 
 /**
@@ -116,8 +113,13 @@ public class Publisher {
         
         System.out.println("Published data. Topic: " + brightnessTopic.getName() + "   Message: " + brigthness);
     }
-
-    public static void main(String... args) throws FileNotFoundException, UnsupportedEncodingException {
+    
+    public static void main(String... args) throws IOException {
+    	//Delete files before startup
+    	File directory = new File("Temperature.txt");
+    	CrunchifyDeleteFiles.deleteThisFile(directory);
+   		directory = new File("Brightness.txt");
+   		CrunchifyDeleteFiles.deleteThisFile(directory);
     	PrintWriter writer = new PrintWriter(tempFile, "UTF-8");
     	PrintWriter writer2 = new PrintWriter(BrightFile, "UTF-8");
         final Publisher publisher = new Publisher();
