@@ -1,0 +1,219 @@
+2016-03-10 11:22:13,134 INFO  - Starting HiveMQ Server
+2016-03-10 11:22:13,217 INFO  - HiveMQ version: 3.1.0
+2016-03-10 11:22:13,223 INFO  - HiveMQ home directory: C:\Users\Kevin\Documents\6-bachelorproef\MQTT_broker
+2016-03-10 11:22:14,080 INFO  - This node's cluster-ID is dR0uR
+2016-03-10 11:22:28,992 INFO  - Loaded Plugin HiveMQ JMX Metrics Reporting Plugin - v3.0.0
+2016-03-10 11:22:28,998 INFO  - Loaded Plugin HiveMQ Sys Topic Plugin - v3.0.0
+2016-03-10 11:22:29,003 INFO  - Loaded Plugin HiveMQ MQTT Message Log Plugin - v3.0.0
+2016-03-10 11:22:29,039 INFO  - JMX Metrics Reporting started.
+2016-03-10 11:22:29,063 INFO  - Starting TCP listener on address 0.0.0.0 and port 1883
+2016-03-10 11:22:29,466 INFO  - Started TCP Listener on address 0.0.0.0 and on port 1883
+2016-03-10 11:22:29,475 INFO  - Started HiveMQ in 16311ms
+2016-03-10 11:33:53,865 INFO  - No valid license file found. Using evaluation license, restricted to 25 connections.
+2016-03-10 11:33:53,957 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 11:33:54,105 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 11:33:59,944 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 11:34:11,325 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 11:34:11,332 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 11:34:11,605 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "0%" (QoS: 1, retained: false)
+2016-03-10 11:34:12,326 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "28?C" (QoS: 1, retained: false)
+2016-03-10 11:34:17,127 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 11:34:17,252 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 11:34:17,385 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "25%" (QoS: 1, retained: false)
+2016-03-10 11:34:17,951 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 11:34:23,141 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "21%" (QoS: 1, retained: false)
+2016-03-10 11:34:23,701 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "30?C" (QoS: 1, retained: false)
+2016-03-10 11:34:25,123 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 11:34:26,655 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 11:34:48,783 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 11:34:48,789 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 11:34:49,049 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "92%" (QoS: 1, retained: false)
+2016-03-10 11:34:49,640 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 11:34:53,642 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 11:34:53,704 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 11:34:54,803 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "68%" (QoS: 1, retained: false)
+2016-03-10 11:34:55,391 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "23?C" (QoS: 1, retained: false)
+2016-03-10 11:35:00,502 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "41%" (QoS: 1, retained: false)
+2016-03-10 11:35:01,064 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "23?C" (QoS: 1, retained: false)
+2016-03-10 11:35:03,077 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 11:35:03,878 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 11:35:20,105 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 11:35:20,111 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 11:35:20,271 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "51%" (QoS: 1, retained: false)
+2016-03-10 11:35:20,860 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "28?C" (QoS: 1, retained: false)
+2016-03-10 11:35:23,335 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 11:35:23,471 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 11:35:23,887 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 11:35:25,950 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "34%" (QoS: 1, retained: false)
+2016-03-10 11:35:26,075 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 11:36:46,117 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 11:36:46,122 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 11:36:46,257 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "30%" (QoS: 1, retained: false)
+2016-03-10 11:36:46,883 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "30?C" (QoS: 1, retained: false)
+2016-03-10 11:36:51,948 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "73%" (QoS: 1, retained: false)
+2016-03-10 11:36:52,597 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "21?C" (QoS: 1, retained: false)
+2016-03-10 11:36:55,940 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 12:55:34,325 INFO  - Starting HiveMQ Server
+2016-03-10 12:55:34,348 INFO  - HiveMQ version: 3.1.0
+2016-03-10 12:55:34,357 INFO  - HiveMQ home directory: C:\Users\Kevin\Documents\6-bachelorproef\MQTT_broker
+2016-03-10 12:55:35,037 INFO  - This node's cluster-ID is Yi5Ov
+2016-03-10 12:55:45,940 INFO  - Loaded Plugin HiveMQ JMX Metrics Reporting Plugin - v3.0.0
+2016-03-10 12:55:45,946 INFO  - Loaded Plugin HiveMQ Sys Topic Plugin - v3.0.0
+2016-03-10 12:55:45,951 INFO  - Loaded Plugin HiveMQ MQTT Message Log Plugin - v3.0.0
+2016-03-10 12:55:45,988 INFO  - JMX Metrics Reporting started.
+2016-03-10 12:55:46,006 INFO  - Starting TCP listener on address 0.0.0.0 and port 1883
+2016-03-10 12:55:46,264 INFO  - Started TCP Listener on address 0.0.0.0 and on port 1883
+2016-03-10 12:55:46,287 INFO  - Started HiveMQ in 11947ms
+2016-03-10 12:55:57,210 INFO  - No valid license file found. Using evaluation license, restricted to 25 connections.
+2016-03-10 12:55:57,277 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 12:55:57,281 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 12:55:57,521 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "33%" (QoS: 1, retained: false)
+2016-03-10 12:55:58,104 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "22?C" (QoS: 1, retained: false)
+2016-03-10 12:56:03,190 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "64%" (QoS: 1, retained: false)
+2016-03-10 12:56:03,752 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "28?C" (QoS: 1, retained: false)
+2016-03-10 12:56:04,642 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 12:56:25,152 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 12:56:25,156 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 12:56:25,275 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "15%" (QoS: 1, retained: false)
+2016-03-10 12:56:25,894 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "22?C" (QoS: 1, retained: false)
+2016-03-10 12:56:29,141 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 12:56:29,229 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 12:56:30,947 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "52%" (QoS: 1, retained: false)
+2016-03-10 12:56:31,531 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "21?C" (QoS: 1, retained: false)
+2016-03-10 12:56:36,651 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "52%" (QoS: 1, retained: false)
+2016-03-10 12:56:37,271 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "23?C" (QoS: 1, retained: false)
+2016-03-10 12:56:42,333 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "91%" (QoS: 1, retained: false)
+2016-03-10 12:56:42,899 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 12:56:43,796 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 12:56:45,735 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 12:57:21,689 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 12:57:21,693 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 12:57:21,816 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "47%" (QoS: 1, retained: false)
+2016-03-10 12:57:22,403 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "27?C" (QoS: 1, retained: false)
+2016-03-10 12:57:27,474 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "25%" (QoS: 1, retained: false)
+2016-03-10 12:57:28,035 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "23?C" (QoS: 1, retained: false)
+2016-03-10 12:57:29,868 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 12:59:28,239 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 12:59:28,243 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 12:59:28,436 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "31%" (QoS: 1, retained: false)
+2016-03-10 12:59:29,079 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "30?C" (QoS: 1, retained: false)
+2016-03-10 12:59:33,370 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 12:59:33,422 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 12:59:34,255 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "68%" (QoS: 1, retained: false)
+2016-03-10 12:59:34,807 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 12:59:39,873 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "3%" (QoS: 1, retained: false)
+2016-03-10 12:59:40,507 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "21?C" (QoS: 1, retained: false)
+2016-03-10 12:59:45,844 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "92%" (QoS: 1, retained: false)
+2016-03-10 12:59:46,405 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "21?C" (QoS: 1, retained: false)
+2016-03-10 12:59:47,274 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 12:59:48,418 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 13:00:29,308 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 13:00:29,312 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 13:00:29,445 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "84%" (QoS: 1, retained: false)
+2016-03-10 13:00:30,109 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "21?C" (QoS: 1, retained: false)
+2016-03-10 13:00:34,033 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:00:34,150 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:00:35,192 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "99%" (QoS: 1, retained: false)
+2016-03-10 13:00:35,760 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "20?C" (QoS: 1, retained: false)
+2016-03-10 13:00:36,786 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:00:38,893 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 13:05:32,238 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 13:05:32,242 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 13:05:32,373 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "92%" (QoS: 1, retained: false)
+2016-03-10 13:05:32,941 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "23?C" (QoS: 1, retained: false)
+2016-03-10 13:05:36,994 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:05:37,138 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:05:38,079 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "92%" (QoS: 1, retained: false)
+2016-03-10 13:05:39,047 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "27?C" (QoS: 1, retained: false)
+2016-03-10 13:05:44,167 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "48%" (QoS: 1, retained: false)
+2016-03-10 13:05:44,742 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "30?C" (QoS: 1, retained: false)
+2016-03-10 13:05:49,855 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "98%" (QoS: 1, retained: false)
+2016-03-10 13:05:50,476 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 13:05:54,747 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:05:55,545 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "74%" (QoS: 1, retained: false)
+2016-03-10 13:05:55,969 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 13:07:11,684 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 13:07:11,687 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 13:07:11,906 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "3%" (QoS: 1, retained: false)
+2016-03-10 13:07:12,445 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "30?C" (QoS: 1, retained: false)
+2016-03-10 13:07:17,645 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "17%" (QoS: 1, retained: false)
+2016-03-10 13:07:18,287 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "29?C" (QoS: 1, retained: false)
+2016-03-10 13:07:19,735 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:07:19,852 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:07:23,390 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "94%" (QoS: 1, retained: false)
+2016-03-10 13:07:24,024 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "30?C" (QoS: 1, retained: false)
+2016-03-10 13:07:29,100 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "21%" (QoS: 1, retained: false)
+2016-03-10 13:07:29,663 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "22?C" (QoS: 1, retained: false)
+2016-03-10 13:07:30,645 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:07:34,730 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "11%" (QoS: 1, retained: false)
+2016-03-10 13:07:35,303 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 13:07:36,982 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 13:07:44,295 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 13:07:44,299 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 13:07:44,424 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "61%" (QoS: 1, retained: false)
+2016-03-10 13:07:45,019 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "28?C" (QoS: 1, retained: false)
+2016-03-10 13:07:50,087 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "13%" (QoS: 1, retained: false)
+2016-03-10 13:07:50,662 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "20?C" (QoS: 1, retained: false)
+2016-03-10 13:07:53,082 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:07:53,157 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:07:55,760 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "74%" (QoS: 1, retained: false)
+2016-03-10 13:07:56,351 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "29?C" (QoS: 1, retained: false)
+2016-03-10 13:08:01,469 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "99%" (QoS: 1, retained: false)
+2016-03-10 13:08:01,556 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:08:02,017 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "20?C" (QoS: 1, retained: false)
+2016-03-10 13:08:07,076 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "20%" (QoS: 1, retained: false)
+2016-03-10 13:08:07,641 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "21?C" (QoS: 1, retained: false)
+2016-03-10 13:08:08,894 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:08:08,956 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:08:12,746 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "67%" (QoS: 1, retained: false)
+2016-03-10 13:08:13,335 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "27?C" (QoS: 1, retained: false)
+2016-03-10 13:08:18,399 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "9%" (QoS: 1, retained: false)
+2016-03-10 13:08:19,012 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "26?C" (QoS: 1, retained: false)
+2016-03-10 13:08:21,802 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:08:23,375 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 13:20:15,413 INFO  - Starting HiveMQ Server
+2016-03-10 13:20:15,428 INFO  - HiveMQ version: 3.1.0
+2016-03-10 13:20:15,435 INFO  - HiveMQ home directory: C:\Users\Kevin\Documents\6-bachelorproef\MQTT_broker
+2016-03-10 13:20:15,956 INFO  - This node's cluster-ID is h0eaE
+2016-03-10 13:20:26,391 INFO  - Loaded Plugin HiveMQ JMX Metrics Reporting Plugin - v3.0.0
+2016-03-10 13:20:26,397 INFO  - Loaded Plugin HiveMQ Sys Topic Plugin - v3.0.0
+2016-03-10 13:20:26,402 INFO  - Loaded Plugin HiveMQ MQTT Message Log Plugin - v3.0.0
+2016-03-10 13:20:26,447 INFO  - JMX Metrics Reporting started.
+2016-03-10 13:20:26,463 INFO  - Starting TCP listener on address 0.0.0.0 and port 1883
+2016-03-10 13:20:26,689 INFO  - Started TCP Listener on address 0.0.0.0 and on port 1883
+2016-03-10 13:20:26,696 INFO  - Started HiveMQ in 11273ms
+2016-03-10 13:20:33,546 INFO  - No valid license file found. Using evaluation license, restricted to 25 connections.
+2016-03-10 13:20:33,609 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 13:20:33,614 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 13:20:33,769 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "35%" (QoS: 1, retained: false)
+2016-03-10 13:20:34,384 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "27?C" (QoS: 1, retained: false)
+2016-03-10 13:20:37,570 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:20:37,658 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:20:39,482 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "68%" (QoS: 1, retained: false)
+2016-03-10 13:20:40,082 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "28?C" (QoS: 1, retained: false)
+2016-03-10 13:20:45,157 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "33%" (QoS: 1, retained: false)
+2016-03-10 13:20:45,706 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "20?C" (QoS: 1, retained: false)
+2016-03-10 13:20:46,336 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:20:47,315 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
+2016-03-10 13:26:10,427 INFO  - Starting HiveMQ Server
+2016-03-10 13:26:10,439 INFO  - HiveMQ version: 3.1.0
+2016-03-10 13:26:10,446 INFO  - HiveMQ home directory: C:\Users\Kevin\Documents\6-bachelorproef\MQTT_broker
+2016-03-10 13:26:10,991 INFO  - This node's cluster-ID is nDpAb
+2016-03-10 13:26:26,483 INFO  - Loaded Plugin HiveMQ JMX Metrics Reporting Plugin - v3.0.0
+2016-03-10 13:26:26,489 INFO  - Loaded Plugin HiveMQ Sys Topic Plugin - v3.0.0
+2016-03-10 13:26:26,496 INFO  - Loaded Plugin HiveMQ MQTT Message Log Plugin - v3.0.0
+2016-03-10 13:26:26,546 INFO  - JMX Metrics Reporting started.
+2016-03-10 13:26:26,565 INFO  - Starting TCP listener on address 0.0.0.0 and port 1883
+2016-03-10 13:26:26,795 INFO  - Started TCP Listener on address 0.0.0.0 and on port 1883
+2016-03-10 13:26:26,801 INFO  - Started HiveMQ in 16365ms
+2016-03-10 13:26:48,548 INFO  - No valid license file found. Using evaluation license, restricted to 25 connections.
+2016-03-10 13:26:48,614 INFO  - Client C4-8E-8F-B0-48-13-pub connected
+2016-03-10 13:26:48,617 INFO  - Client C4-8E-8F-B0-48-13-pub set Last Will and Testament. Topic: "home/LWT", Payload: "[73, 39, 109, 32, 103, 111, 110, 101, 32, 58, 40]", QoS: 0, retain: false
+2016-03-10 13:26:48,795 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "27%" (QoS: 1, retained: false)
+2016-03-10 13:26:49,364 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "25?C" (QoS: 1, retained: false)
+2016-03-10 13:26:53,334 INFO  - Client C4-8E-8F-B0-48-13-sub connected
+2016-03-10 13:26:53,397 INFO  - Subscribe from client C4-8E-8F-B0-48-13-sub received: home/# QoS: 1
+2016-03-10 13:26:54,426 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/brightness": "71%" (QoS: 1, retained: false)
+2016-03-10 13:26:54,983 INFO  - Client C4-8E-8F-B0-48-13-pub sent a message to topic "home/temperature": "27?C" (QoS: 1, retained: false)
+2016-03-10 13:26:56,067 INFO  - Client C4-8E-8F-B0-48-13-sub disconnected
+2016-03-10 13:26:57,037 INFO  - Client C4-8E-8F-B0-48-13-pub disconnected
