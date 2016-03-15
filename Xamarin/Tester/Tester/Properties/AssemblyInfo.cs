@@ -30,3 +30,5 @@ using System.Resources;
 [assembly: UsesPermission(Android.Manifest.Permission.AccessFineLocation)]
 [assembly: UsesPermission(Android.Manifest.Permission.AccessCoarseLocation)]
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
+[assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
+//<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

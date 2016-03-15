@@ -1,0 +1,17 @@
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/Xamarin.iOS,Version=v1.0.AssemblyAttribute.cs
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/ibtool/LaunchScreen.nib
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/ibtool/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/ibtool/Main.storyboardc/Info.plist
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/ibtool/Main.storyboardc/UIViewController-BYZ-38-t0r.nib
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/ibtool/_BundleResourceWithLogicalName.items
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/build-ipad5.3-9.2.1/actool/partial-info.plist
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/build-ipad5.3-9.2.1/actool/asset-manifest.plist
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/actool/_PartialAppManifest.items
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/actool/_BundleResourceWithLogicalName.items
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/optimized/
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/bin/iPhone/Debug/Bachtest.iOS.exe.mdb
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/bin/iPhone/Debug/Bachtest.iOS.exe
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/Bachtest.iOS.exe
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/obj/iPhone/Debug/Bachtest.iOS.exe.mdb
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/bin/iPhone/Debug/Bachtest.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Bachtest/iOS/bin/iPhone/Debug/Bachtest.dll.mdb

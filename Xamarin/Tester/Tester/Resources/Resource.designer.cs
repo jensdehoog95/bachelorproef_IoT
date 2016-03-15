@@ -41,20 +41,52 @@ namespace Tester
 			}
 		}
 		
+		public partial class Color
+		{
+			
+			// aapt resource value: 0x7f060000
+			public const int theme_devicedefault_background = 2131099648;
+			
+			static Color()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Color()
+			{
+			}
+		}
+		
+		public partial class Drawable
+		{
+			
+			// aapt resource value: 0x7f020000
+			public const int noti = 2130837504;
+			
+			static Drawable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Drawable()
+			{
+			}
+		}
+		
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int accelerometer_text = 2131034112;
+			// aapt resource value: 0x7f080000
+			public const int accelerometer_text = 2131230720;
 			
-			// aapt resource value: 0x7f050003
-			public const int address_text = 2131034115;
+			// aapt resource value: 0x7f080003
+			public const int address_text = 2131230723;
 			
-			// aapt resource value: 0x7f050002
-			public const int get_address_button = 2131034114;
+			// aapt resource value: 0x7f080002
+			public const int get_address_button = 2131230722;
 			
-			// aapt resource value: 0x7f050001
-			public const int location_text = 2131034113;
+			// aapt resource value: 0x7f080001
+			public const int location_text = 2131230721;
 			
 			static Id()
 			{
@@ -69,8 +101,8 @@ namespace Tester
 		public partial class Layout
 		{
 			
-			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			// aapt resource value: 0x7f040000
+			public const int Main = 2130968576;
 			
 			static Layout()
 			{
@@ -85,8 +117,8 @@ namespace Tester
 		public partial class Mipmap
 		{
 			
-			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			// aapt resource value: 0x7f030000
+			public const int Icon = 2130903040;
 			
 			static Mipmap()
 			{
@@ -101,11 +133,11 @@ namespace Tester
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int app_name = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int app_name = 2131034113;
 			
-			// aapt resource value: 0x7f040000
-			public const int hello = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int hello = 2131034112;
 			
 			static String()
 			{
@@ -113,6 +145,22 @@ namespace Tester
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f070000
+			public const int Theme_Custom = 2131165184;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}

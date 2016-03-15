@@ -1,14 +1,18 @@
 ﻿<Properties StartupItem="Tester/Tester.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.SH44NWM07311" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tester/MainActivity.cs">
     <Files>
-      <File FileName="Tester/MainActivity.cs" Line="1" Column="1" />
-      <File FileName="Tester/Resources/values/Strings.xml" Line="1" Column="1" />
+      <File FileName="Tester/MainActivity.cs" Line="66" Column="31" />
+      <File FileName="Tester/Publisher.cs" Line="1" Column="1" />
+      <File FileName="Tester/Properties/AndroidManifest.xml" Line="1" Column="1" />
+      <File FileName="Tester/Properties/AssemblyInfo.cs" Line="1" Column="1" />
+      <File FileName="Tester/Assets/AboutAssets.txt" Line="1" Column="1" />
+      <File FileName="Tester/Assets/Brightness.txt" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Tester AndroidDesignerPreferredDevice="Nexus 5" AndroidDesignerPreferredTheme="Theme.Holo.Light" />
+  <MonoDevelop.Ide.ItemProperties.Tester AndroidDesignerPreferredDevice="Nexus 5" AndroidDesignerPreferredTheme="Theme.Custom" />
 </Properties>

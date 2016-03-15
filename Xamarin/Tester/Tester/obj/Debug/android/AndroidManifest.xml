@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.bachelorproefiot.tester">
-  <!--suppress UsesMinSdkAttributes-->
-  <uses-sdk android:minSdkVersion="16" />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="23" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <application android:allowBackup="true" android:icon="@mipmap/icon" android:label="@string/app_name" android:theme="@android:style/Theme.Holo.Light" android:name="mono.android.app.Application" android:debuggable="true">
-    <activity android:icon="@mipmap/icon" android:label="Tester1" android:name="md5d475503747e77dfdaaf4eb27e00af0cc.MainActivity">
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <application android:allowBackup="true" android:icon="@mipmap/icon" android:label="@string/app_name" android:theme="@android:style/Theme.Material.Light" android:name="mono.android.app.Application" android:debuggable="true">
+    <activity android:icon="@mipmap/icon" android:label="TestBach" android:theme="@android:style/Theme.Material.Light.DarkActionBar" android:name="md5d475503747e77dfdaaf4eb27e00af0cc.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

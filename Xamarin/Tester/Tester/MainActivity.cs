@@ -5,6 +5,7 @@ using Android.Widget;
 using Android.OS;
 using Android.Util;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Text;
 
 namespace Tester
 {
-	[Activity (Label = "Tester1", MainLauncher = true, Icon = "@mipmap/icon")]
+	[Activity (Theme = "@android:style/Theme.Material.Light.DarkActionBar", Label = "TestBach", MainLauncher = true, Icon = "@mipmap/icon")]
 	public class MainActivity : Activity, ISensorEventListener, ILocationListener
 	{
 		/*
@@ -55,7 +56,14 @@ namespace Tester
 			FindViewById<TextView>(Resource.Id.get_address_button).Click += AddressButton_OnClick; // Koppel de functie achter
 				// de knop aan de knop zelf
 			InitializeLocationManager(); // Roep initialisatiefunctie op
-	
+
+			string content;
+			Android.Content.Res.AssetManager assets = this.Assets;
+			using (StreamReader sr = new StreamReader (assets.Open ("Brightness.txt"))) 
+			{
+				content = sr.ReadToEnd ();
+			}
+			_addressText.Text = content;
 		}
 
 		/*
@@ -76,7 +84,15 @@ namespace Tester
 			lock (_syncLock)
 			{
 				// Parse de waardes van 'e' naar een mooie string
-				_sensorTextView.Text = string.Format("x={0:f}, y={1:f}, z={2:f}", e.Values[0], e.Values[1], e.Values[2]);
+				//_sensorTextView.Text = string.Format("x={0:f}, y={1:f}, z={2:f}", e.Values[0], e.Values[1], e.Values[2]);
+				double g = Math.Sqrt(Math.Pow(e.Values[0],2) + Math.Pow(e.Values[1],2) + Math.Pow(e.Values[2],2));
+				_sensorTextView.Text = string.Format ("G Force: {0:f}", g);
+				if (g > 12) {
+					_sensorTextView.SetBackgroundColor (Android.Graphics.Color.Red);
+				} else {
+					_sensorTextView.SetBackgroundColor (Android.Graphics.Color.Transparent);
+				}
+
 			}
 		}
 
@@ -136,8 +152,8 @@ namespace Tester
 			{
 				_locationText.Text = string.Format("Breedte: {0:f6} - Lengte: {1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
 				// Await: wacht totdat de functie 'ReverseGeocodeCurrentLocation' zijn waarde heeft teruggegeven.
-				Address address = await ReverseGeocodeCurrentLocation();
-				DisplayAddress(address);
+				//Address address = await ReverseGeocodeCurrentLocation();
+				//DisplayAddress(address);
 			}
 		}
 
@@ -199,6 +215,24 @@ namespace Tester
 
 			// Stuur het adres naar de GUI
 			DisplayAddress(address);
+
+		//Notification
+			// Instantiate the builder and set notification elements:
+			Notification.Builder builder = new Notification.Builder (this)
+				.SetContentTitle ("Notification")
+				.SetContentText ("Adres is ingesteld!")
+				.SetSmallIcon (Resource.Drawable.noti);
+
+			// Build the notification:
+			Notification notification = builder.Build();
+
+			// Get the notification manager:
+			NotificationManager notificationManager =
+				GetSystemService (Android.Content.Context.NotificationService) as NotificationManager;
+
+			// Publish the notification:
+			const int notificationId = 0;
+			notificationManager.Notify (notificationId, notification);
 		}
 
 		/*
