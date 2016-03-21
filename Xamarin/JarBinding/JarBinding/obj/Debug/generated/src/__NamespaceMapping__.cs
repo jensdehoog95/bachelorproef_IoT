@@ -5,4 +5,3 @@
 [assembly:global::Android.Runtime.NamespaceMapping (Java = "org.eclipse.paho.client.mqttv3.logging", Managed="Org.Eclipse.Paho.Client.Mqttv3.Logging")]
 [assembly:global::Android.Runtime.NamespaceMapping (Java = "org.eclipse.paho.client.mqttv3.persist", Managed="Org.Eclipse.Paho.Client.Mqttv3.Persist")]
 [assembly:global::Android.Runtime.NamespaceMapping (Java = "org.eclipse.paho.client.mqttv3.util", Managed="Org.Eclipse.Paho.Client.Mqttv3.Util")]
-[assembly:global::Android.Runtime.NamespaceMapping (Java = "org.eclipse.paho.sample.utility", Managed="Org.Eclipse.Paho.Sample.Utility")]

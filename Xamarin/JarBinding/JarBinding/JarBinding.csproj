@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{10368E6C-D01B-4462-8E8B-01FC667A7035};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{7BFF1302-A9DE-4659-8FC6-FBCC6AED74E4}</ProjectGuid>
+    <ProjectGuid>{1D039A46-63D2-4EDF-8A53-E1DB668C0FAB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>JarBinding</RootNamespace>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
@@ -54,6 +54,5 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <ItemGroup>
     <EmbeddedJar Include="Jars\org.eclipse.paho.client.mqttv3-1.0.2.jar" />
-    <EmbeddedJar Include="Jars\org.eclipse.paho.mqtt.utility-1.0.2.jar" />
   </ItemGroup>
 </Project>

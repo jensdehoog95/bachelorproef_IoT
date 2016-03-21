@@ -6,14 +6,21 @@ using Android.OS;
 using Android.Util;
 using System;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Org.Eclipse.Paho.Client.Mqttv3;
+using Org.Eclipse.Paho.Client.Mqttv3.Internal;
+using Org.Eclipse.Paho.Client.Mqttv3.Logging;
+using Org.Eclipse.Paho.Client.Mqttv3.Persist;
+using Org.Eclipse.Paho.Client.Mqttv3.Util;
 
 namespace Tester
 {
 	[Activity (Theme = "@android:style/Theme.Material.Light.DarkActionBar", Label = "TestBach", MainLauncher = true, Icon = "@mipmap/icon")]
+	//
 	public class MainActivity : Activity, ISensorEventListener, ILocationListener
 	{
 		/*
@@ -29,6 +36,7 @@ namespace Tester
 		static readonly string TAG = "X:" + typeof (MainActivity).Name; // String die enkel uitgelezen kan worden
 		TextView _addressText; // Geeft adresgegevens weer naar gebruiker
 		Location _currentLocation; // Representeert een geografische locatie
+		TextView _maxText;
 		LocationManager _locationManager; // Verleent toegang tot locatieservices van het systeem
 
 		string _locationProvider; // String die locatieprovider bevat
@@ -41,7 +49,6 @@ namespace Tester
 		{
 			base.OnCreate(bundle);
 			SetContentView(Resource.Layout.Main);
-
 			/*
 			 * Accelerometer
 		 	 */
@@ -53,17 +60,21 @@ namespace Tester
 			 */ 
 			_addressText = FindViewById<TextView>(Resource.Id.address_text); // Koppel textview aan textlabel in GUI
 			_locationText = FindViewById<TextView>(Resource.Id.location_text); // Koppel textview aan textlabel in GUI
+			_maxText = FindViewById<TextView>(Resource.Id.textMax);
 			FindViewById<TextView>(Resource.Id.get_address_button).Click += AddressButton_OnClick; // Koppel de functie achter
 				// de knop aan de knop zelf
+			FindViewById<TextView>(Resource.Id.get_address_button).Enabled = false;
 			InitializeLocationManager(); // Roep initialisatiefunctie op
-
+			/*
 			string content;
 			Android.Content.Res.AssetManager assets = this.Assets;
 			using (StreamReader sr = new StreamReader (assets.Open ("Brightness.txt"))) 
 			{
 				content = sr.ReadToEnd ();
 			}
-			_addressText.Text = content;
+			_addressText.Text = content; */
+
+			//utilMQTT ();
 		}
 
 		/*
@@ -87,8 +98,9 @@ namespace Tester
 				//_sensorTextView.Text = string.Format("x={0:f}, y={1:f}, z={2:f}", e.Values[0], e.Values[1], e.Values[2]);
 				double g = Math.Sqrt(Math.Pow(e.Values[0],2) + Math.Pow(e.Values[1],2) + Math.Pow(e.Values[2],2));
 				_sensorTextView.Text = string.Format ("G Force: {0:f}", g);
-				if (g > 12) {
+				if (g > 18.5) {
 					_sensorTextView.SetBackgroundColor (Android.Graphics.Color.Red);
+					_maxText.Text = g.ToString();
 				} else {
 					_sensorTextView.SetBackgroundColor (Android.Graphics.Color.Transparent);
 				}
@@ -278,6 +290,40 @@ namespace Tester
 			{
 				_addressText.Text = "Adres bepalen mislukt. Probeer later opnieuw.";
 			}
+		}
+
+		void utilMQTT() {
+			Ping ping = new Ping ();
+
+			String topic        = "home/temperature";
+			String content      = "Message from MqttPublishSample";
+			int qos             = 2;
+			String ipBroker		= "192.168.0.163";
+			String broker       = "tcp://" + ipBroker + ":1883";
+			String clientId     = "JavaSample";
+			MemoryPersistence persistence = new MemoryPersistence();
+
+			PingReply pingReply = ping.Send (ipBroker);
+
+			if (pingReply.Status != IPStatus.Success) {
+				_addressText.Text = "Ping mislukt";
+			} else {
+				MqttClient sampleClient = new MqttClient (broker, clientId, persistence);
+				MqttConnectOptions connOpts = new MqttConnectOptions ();
+				connOpts.CleanSession = true;
+				sampleClient.Connect (connOpts);
+				MqttMessage message = new MqttMessage (GetBytes (content));
+				message.Qos = qos;
+				sampleClient.Publish (topic, message);
+				sampleClient.Disconnect ();
+			}
+		}
+
+		static byte[] GetBytes(string str)
+		{
+			byte[] bytes = new byte[str.Length * sizeof(char)];
+			System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+			return bytes;
 		}
 
 	}

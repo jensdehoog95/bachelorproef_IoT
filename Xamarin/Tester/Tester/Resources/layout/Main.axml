@@ -33,4 +33,10 @@
         android:text="Address (when available)"
         android:id="@+id/address_text"
         android:layout_marginTop="10dp" />
+    <TextView
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textMax" />
 </LinearLayout>

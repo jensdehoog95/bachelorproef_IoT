@@ -1,0 +1,8 @@
+Gigabyke.MainActivity, Gigabyke;md5ee6321c8da64fad3cebec2618c6db874.MainActivity
+Gigabyke.MainActivity, Gigabyke, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;md5ee6321c8da64fad3cebec2618c6db874.MainActivity
+Gigabyke.MainActivity;md5ee6321c8da64fad3cebec2618c6db874.MainActivity
+gigabyke.MainActivity;md5ee6321c8da64fad3cebec2618c6db874.MainActivity
+Org.Eclipse.Paho.Client.Mqttv3.IMqttActionListenerImplementor, JarBinding;mono.org.eclipse.paho.client.mqttv3.IMqttActionListenerImplementor
+Org.Eclipse.Paho.Client.Mqttv3.IMqttActionListenerImplementor, JarBinding, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null;mono.org.eclipse.paho.client.mqttv3.IMqttActionListenerImplementor
+Org.Eclipse.Paho.Client.Mqttv3.IMqttActionListenerImplementor;mono.org.eclipse.paho.client.mqttv3.IMqttActionListenerImplementor
+mono.org.eclipse.paho.client.mqttv3.IMqttActionListenerImplementor;mono.org.eclipse.paho.client.mqttv3.IMqttActionListenerImplementor

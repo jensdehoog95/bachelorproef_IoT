@@ -88,6 +88,9 @@ namespace Tester
 			// aapt resource value: 0x7f080001
 			public const int location_text = 2131230721;
 			
+			// aapt resource value: 0x7f080004
+			public const int textMax = 2131230724;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

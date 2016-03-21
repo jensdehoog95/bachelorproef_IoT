@@ -17,3 +17,5 @@
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Debug/Tester.dll.mdb
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Debug/res/values/theme.xml
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Debug/res/drawable/noti.png
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/bin/Debug/JarBinding.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/bin/Debug/JarBinding2.dll
