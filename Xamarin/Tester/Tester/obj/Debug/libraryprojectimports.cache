@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Paths>
   <Jars></Jars>
-  <ResolvedResourceDirectories />
-  <ResolvedAssetDirectories />
+  <ResolvedResourceDirectories>
+    <ResolvedResourceDirectory>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Debug/__library_projects__/CommonSampleLibrary/library_project_imports/res</ResolvedResourceDirectory>
+  </ResolvedResourceDirectories>
+  <ResolvedAssetDirectories>
+    <ResolvedAssetDirectory>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Debug/__library_projects__/CommonSampleLibrary/library_project_imports/assets</ResolvedAssetDirectory>
+  </ResolvedAssetDirectories>
   <ResolvedEnvironmentFiles />
-  <ResolvedResourceDirectoryStamps />
+  <ResolvedResourceDirectoryStamps>
+    <ResolvedResourceDirectoryStamp>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Debug/__library_projects__/CommonSampleLibrary.stamp</ResolvedResourceDirectoryStamp>
+  </ResolvedResourceDirectoryStamps>
 </Paths>

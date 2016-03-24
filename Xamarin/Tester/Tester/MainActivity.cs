@@ -4,6 +4,10 @@ using Android.Locations;
 using Android.Widget;
 using Android.OS;
 using Android.Util;
+using Android.Content;
+using Android.Runtime;
+using Android.Views;
+using Android.Content.PM;
 using System;
 using System.IO;
 using System.Net.NetworkInformation;
@@ -16,13 +20,55 @@ using Org.Eclipse.Paho.Client.Mqttv3.Internal;
 using Org.Eclipse.Paho.Client.Mqttv3.Logging;
 using Org.Eclipse.Paho.Client.Mqttv3.Persist;
 using Org.Eclipse.Paho.Client.Mqttv3.Util;
+using Android.Support.V4.App;
+using Android.Support.Design.Widget;
+
+using CommonSampleLibrary;
+using Log = CommonSampleLibrary.Log;
+using Java.Interop;
 
 namespace Tester
 {
 	[Activity (Theme = "@android:style/Theme.Material.Light.DarkActionBar", Label = "TestBach", MainLauncher = true, Icon = "@mipmap/icon")]
 	//
-	public class MainActivity : Activity, ISensorEventListener, ILocationListener
+	public class MainActivity : Activity, ISensorEventListener, ILocationListener, ActivityCompat.IOnRequestPermissionsResultCallback
 	{
+		public string TAG {
+			get {
+				return "MainActivity";
+			}
+		}
+
+		/**
+     	* Id to identify a camera permission request.
+     	*/
+		static readonly int REQUEST_COARSELOCATION = 0;
+
+		/**
+     	* Id to identify a contacts permission request.
+     	*/
+		static readonly int REQUEST_FINELOCATION = 1;
+
+		static readonly int REQUEST_INTERNET = 2;
+
+		/**
+     	* Permissions required to read and write contacts. Used by the ContactsFragment.
+     	*/
+		static string[] PERMISSIONS_CONTACT = {
+			Android.Manifest.Permission.AccessCoarseLocation,
+			Android.Manifest.Permission.AccessFineLocation,
+			Android.Manifest.Permission.Internet
+		};
+
+		// Whether the Log Fragment is currently shown.
+		//bool logShown;
+
+		/**
+     	* Root of the layout of this Activity.
+     	*/
+		View layout;
+
+		
 		/*
 		 * Accelerometer
 		 */
@@ -33,7 +79,7 @@ namespace Tester
 		/*
 		 * GPS
 		 */ 
-		static readonly string TAG = "X:" + typeof (MainActivity).Name; // String die enkel uitgelezen kan worden
+		static readonly string TAG1 = "X:" + typeof (MainActivity).Name; // String die enkel uitgelezen kan worden
 		TextView _addressText; // Geeft adresgegevens weer naar gebruiker
 		Location _currentLocation; // Representeert een geografische locatie
 		TextView _maxText;
@@ -41,6 +87,7 @@ namespace Tester
 
 		string _locationProvider; // String die locatieprovider bevat
 		TextView _locationText; // Geeft locatiegegevens weer naar gebruiker
+
 
 		/*
 		 * Wordt als eerste functie opgeroepen, initialiseert alles
@@ -182,6 +229,22 @@ namespace Tester
 		 */
 		void InitializeLocationManager()
 		{
+			if (ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted) {
+
+				// CoarseLocation permission has not been granted
+				RequestCoarsePermission ();
+			}
+			if (ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessFineLocation) != (int)Permission.Granted) {
+
+				// FineLocation permission has not been granted
+				RequestFinePermission ();
+			}
+			if (ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.Internet) != (int)Permission.Granted) {
+
+				// Internet permission has not been granted
+				RequestInternetPermission ();
+			}
+
 			_locationManager = (LocationManager) GetSystemService(LocationService); // Verkrijg de service van het systeem
 
 			// Maak een nieuw criterium aan voor de location service. De nauwkeurigheid moet fijn zijn.
@@ -205,9 +268,86 @@ namespace Tester
 			}
 
 			// Schrijf de gebruikte location provider naar de debug console
-			Log.Debug(TAG, "Using " + _locationProvider + ".");
+			Log.Debug(TAG1, "Using " + _locationProvider + ".");
 
 		}
+
+		/**
+     	* Requests the CoarseLocation permission.
+		* If the permission has been denied previously, a SnackBar will prompt the user to grant the
+		* permission, otherwise it is requested directly.
+		*/
+		void RequestCoarsePermission ()
+		{
+			Log.Info (TAG, "COARSE permission has NOT been granted. Requesting permission.");
+
+			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.AccessCoarseLocation)) {
+				// Provide an additional rationale to the user if the permission was not granted
+				// and the user would benefit from additional context for the use of the permission.
+				// For example if the user has previously denied the permission.
+				Log.Info (TAG, "Displaying COARSE permission rationale to provide additional context.");
+
+				Snackbar.Make (layout, Resource.String.hello,
+					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
+						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessCoarseLocation }, REQUEST_COARSELOCATION);
+					})).Show ();
+			} else {
+				// Camera permission has not been granted yet. Request it directly.
+				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessCoarseLocation }, REQUEST_COARSELOCATION);
+			}
+		}
+
+		/**
+     	* Requests the FineLocation permission.
+		* If the permission has been denied previously, a SnackBar will prompt the user to grant the
+		* permission, otherwise it is requested directly.
+		*/
+		void RequestFinePermission ()
+		{
+			Log.Info (TAG, "Fine permission has NOT been granted. Requesting permission.");
+
+			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.AccessCoarseLocation)) {
+				// Provide an additional rationale to the user if the permission was not granted
+				// and the user would benefit from additional context for the use of the permission.
+				// For example if the user has previously denied the permission.
+				Log.Info (TAG, "Displaying Fine permission rationale to provide additional context.");
+
+				Snackbar.Make (layout, Resource.String.hello,
+					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
+						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessFineLocation }, REQUEST_FINELOCATION);
+					})).Show ();
+			} else {
+				// Camera permission has not been granted yet. Request it directly.
+				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessFineLocation }, REQUEST_FINELOCATION);
+			}
+		}
+
+		/**
+     	* Requests the Internet permission.
+		* If the permission has been denied previously, a SnackBar will prompt the user to grant the
+		* permission, otherwise it is requested directly.
+		*/
+		void RequestInternetPermission ()
+		{
+			Log.Info (TAG, "Internet permission has NOT been granted. Requesting permission.");
+
+			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.AccessCoarseLocation)) {
+				// Provide an additional rationale to the user if the permission was not granted
+				// and the user would benefit from additional context for the use of the permission.
+				// For example if the user has previously denied the permission.
+				Log.Info (TAG, "Displaying Intenet permission rationale to provide additional context.");
+
+				Snackbar.Make (layout, Resource.String.hello,
+					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
+						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.Internet }, REQUEST_INTERNET);
+					})).Show ();
+			} else {
+				// Camera permission has not been granted yet. Request it directly.
+				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.Internet }, REQUEST_INTERNET);
+			}
+		}
+
+
 
 		/*
 		 * GPS

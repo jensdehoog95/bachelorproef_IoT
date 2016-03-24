@@ -1,5 +1,8 @@
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/MonoAndroid,Version=v4.4.AssemblyAttribute.cs
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/JarBinding.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/MonoAndroid,Version=v6.0.AssemblyAttribute.cs
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/Xamarin.Android.Support.v7.AppCompat.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/Xamarin.Android.Support.v7.RecyclerView.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/Xamarin.Android.Support.Design.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/Xamarin.Android.Support.v4.dll
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/Gigabyke.dll.mdb
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/Gigabyke.dll
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/com.bachelorproefiot.gigabyke.apk
@@ -12,8 +15,10 @@
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/res/mipmap-xxhdpi/icon.png
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/res/mipmap-xxxhdpi/icon.png
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/res/values/theme.xml
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/res/drawable/icon.png
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/R.cs.flag
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/com.bachelorproefiot.gigabyke-Signed.apk
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/uploadflags.txt
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/Gigabyke.dll
 /Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/Gigabyke.dll.mdb
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/bin/Debug/JarBinding.dll
