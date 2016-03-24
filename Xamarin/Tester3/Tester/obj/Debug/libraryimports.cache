@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Paths>
-  <ManifestDocuments />
-  <NativeLibraries />
-  <Jars>
-    <Jar>obj/Debug/__library_projects__/JarBinding/library_project_imports/org.eclipse.paho.client.mqttv3-1.0.2.jar</Jar>
-    <Jar>obj/Debug/__library_projects__/JarBinding2/library_project_imports/org.eclipse.paho.client.mqttv3-1.0.2.jar</Jar>
-  </Jars>
-</Paths>

@@ -1,8 +1,0 @@
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/Tester.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/System.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/System.Xml.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/Mono.Android.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/System.Core.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/mscorlib.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/System.Runtime.Serialization.dll
-/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Tester/Tester/obj/Release/android/assets/System.ServiceModel.Internals.dll
