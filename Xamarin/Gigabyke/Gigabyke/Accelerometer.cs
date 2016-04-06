@@ -95,23 +95,6 @@ namespace Gigabyke
 						elapsed = sw.ElapsedMilliseconds;
 						if (newG > _thresholdMeter) {
 							counter++;
-							if (elapsed >= 1500) {
-								if (counter >= 2 && counter <= 5) {
-									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-									_max.Text = string.Format ("{0:f6}", newG);
-									sw.Restart ();
-									counter = 0;
-								} else if (counter > 5) {
-									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-									_max.Text = counter.ToString ();
-									sw.Restart ();
-									counter = 0;
-								} else {
-									_max.Text = "";
-									sw.Restart ();
-									counter = 0;
-								}
-							}
 							//if (elapsed > 5000) {
 							//	sw.Restart ();
 							//	counter = 0;
@@ -122,6 +105,23 @@ namespace Gigabyke
 							if (_hasVibrator)
 								CrossVibrate.Current.Vibration (100);
 						} else {
+							if (elapsed >= 1250) {
+								if (counter >= 2 && counter <= 4) {
+									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+									_max.Text = "PUT!";
+									sw.Restart ();
+									counter = 0;
+								} else if (counter > 4) {
+									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+									_max.Text = counter.ToString ();
+									sw.Restart ();
+									counter = 0;
+								} else {
+									_max.Text = "";
+									sw.Restart ();
+									counter = 0;
+								}
+							}
 							_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
 						}
 					}
