@@ -30,10 +30,12 @@ namespace Gigabyke
 		private double _factor;
 		private bool _calibrationActive = false;
 		private bool _hasVibrator = false;
+		private int grotePutCounter = 0;
 
 		private int counter;
 		private double elapsed;
 		private Stopwatch sw;
+		private Stopwatch putWatch;
 
 		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
 		{
@@ -48,6 +50,7 @@ namespace Gigabyke
 			//sw.Start();
 			this.counter = 0;
 			this.elapsed = 0;
+			this.putWatch = new Stopwatch ();
 
 		}
 
@@ -62,6 +65,7 @@ namespace Gigabyke
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
 			this.sw = new Stopwatch ();
+			this.putWatch = new Stopwatch ();
 		}
 
 		/*
@@ -83,6 +87,8 @@ namespace Gigabyke
 			{
 				// Parse de waardes van 'e' naar een mooie string
 				double g = Math.Sqrt (Math.Pow (e.Values [0], 2) + Math.Pow (e.Values [1], 2) + Math.Pow (e.Values [2], 2));
+				double tempTreshold = _thresholdMeter;
+
 				if (_calibrationActive == false) {
 					if (_factor == 0) {
 						_accValues.Text = "Eerst kalibreren aub";
@@ -95,31 +101,40 @@ namespace Gigabyke
 						elapsed = sw.ElapsedMilliseconds;
 						if (newG > _thresholdMeter) {
 							counter++;
-							//if (elapsed > 5000) {
-							//	sw.Restart ();
-							//	counter = 0;
-							//}
-
-							//_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-							//_max.Text = string.Format ("{0:f2}", newG);
+							putWatch.Start ();
 							if (_hasVibrator)
 								CrossVibrate.Current.Vibration (100);
+							
 						} else {
 							if (elapsed >= 1250) {
 								if (counter >= 2 && counter <= 4) {
-									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
 									_max.Text = "PUT!";
-									sw.Restart ();
-									counter = 0;
 								} else if (counter > 4) {
-									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
 									_max.Text = counter.ToString ();
-									sw.Restart ();
-									counter = 0;
+									tempTreshold = _thresholdMeter;
+									_thresholdMeter = 3;
 								} else {
 									_max.Text = "";
-									sw.Restart ();
-									counter = 0;
+									_thresholdMeter = tempTreshold;
+									grotePutCounter = 0;
+								}
+								putWatch.Reset ();
+								sw.Restart ();
+								counter = 0;
+							} 
+
+							if (counter >= 5 && counter <= 8) {
+								if (putWatch.ElapsedMilliseconds <= 650) {
+									if (grotePutCounter >= 1) {
+										_max.Text = counter.ToString ();
+									} else {
+										_max.Text = "GROTE PUT!";
+										Task.Delay (500);
+										grotePutCounter++;
+										putWatch.Reset ();
+										sw.Restart ();
+										counter = 0;
+									}
 								}
 							}
 							_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
