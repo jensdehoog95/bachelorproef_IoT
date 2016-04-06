@@ -40,12 +40,12 @@ namespace Gigabyke
 			this._sensorManager = manager;
 			this._accValues = values;
 			this._gforceView = gforce;
-			this._thresholdMeter = 10;
+			this._thresholdMeter = 5;
 			this._max = max;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
 			this.sw = new Stopwatch();
-			sw.Start();
+			//sw.Start();
 			this.counter = 0;
 			this.elapsed = 0;
 
@@ -61,6 +61,7 @@ namespace Gigabyke
 			this._calibrationActive = true;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
+			this.sw = new Stopwatch ();
 		}
 
 		/*
@@ -93,10 +94,11 @@ namespace Gigabyke
 
 						elapsed = sw.ElapsedMilliseconds;
 						if (newG > _thresholdMeter) {
+							counter++;
 							if (elapsed >= 1500) {
 								if (counter == 2) {
 									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-									_max.Text = g.ToString ();
+									_max.Text = newG.ToString ();
 									sw.Restart ();
 									counter = 0;
 								} else if (counter == 4) {
@@ -145,6 +147,8 @@ namespace Gigabyke
 			_sensorManager.RegisterListener (this,
 				_sensorManager.GetDefaultSensor (SensorType.Accelerometer),
 				SensorDelay.Ui);
+			sw.Reset ();
+			sw.Start ();
 		}
 
 		public void setFactor(double factor) {

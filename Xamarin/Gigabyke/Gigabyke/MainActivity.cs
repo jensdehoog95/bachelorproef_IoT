@@ -75,7 +75,7 @@ namespace Gigabyke
 
 				double step = e.Progress/stepSeekBar;
 				double newStep = Math.Round(step);
-				double newProgress = newStep + 10;
+				double newProgress = newStep + 5;
 				accelerometer.setThreshold(newProgress);
 				_sliderText.Text = newProgress.ToString();
 				_slider.Progress = ((int)newStep * stepSeekBar);
