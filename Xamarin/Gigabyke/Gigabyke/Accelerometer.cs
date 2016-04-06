@@ -40,7 +40,7 @@ namespace Gigabyke
 			this._sensorManager = manager;
 			this._accValues = values;
 			this._gforceView = gforce;
-			this._thresholdMeter = 5;
+			this._thresholdMeter = 1;
 			this._max = max;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
@@ -88,7 +88,7 @@ namespace Gigabyke
 						_accValues.Text = "Eerst kalibreren aub";
 						_gforceView.Text = "";
 					} else {
-						double newG = (Math.Sqrt (Math.Pow (e.Values [0], 2) + Math.Pow (e.Values [1], 2) + Math.Pow (e.Values [2], 2)) - 9.81) * _factor;
+						double newG = (g - 9.81) * _factor;
 						_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e.Values [0], e.Values [1], e.Values [2]);
 						_gforceView.Text = string.Format ("G Force: {0:f}", newG);
 
@@ -96,31 +96,26 @@ namespace Gigabyke
 						if (newG > _thresholdMeter) {
 							counter++;
 							if (elapsed >= 1500) {
-								if (counter == 2) {
+								if (counter >= 2 && counter <= 5) {
 									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-									_max.Text = newG.ToString ();
+									_max.Text = string.Format ("{0:f6}", newG);
 									sw.Restart ();
 									counter = 0;
-								} else if (counter == 4) {
-									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-									_max.Text = counter.ToString ();
-									sw.Restart ();
-									counter = 0;
-								} else if (counter > 4) {
+								} else if (counter > 5) {
 									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
 									_max.Text = counter.ToString ();
 									sw.Restart ();
 									counter = 0;
 								} else {
-									_max.Text = counter.ToString ();
+									_max.Text = "";
 									sw.Restart ();
 									counter = 0;
 								}
 							}
-							if (elapsed > 5000) {
-								sw.Restart ();
-								counter = 0;
-							}
+							//if (elapsed > 5000) {
+							//	sw.Restart ();
+							//	counter = 0;
+							//}
 
 							//_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
 							//_max.Text = string.Format ("{0:f2}", newG);
@@ -164,16 +159,25 @@ namespace Gigabyke
 
 			double ticksStart = Java.Lang.JavaSystem.CurrentTimeMillis();
 			double maxG = 0;
-			do {
-				
-				if (_calibrMax > maxG) {
-					maxG = _calibrMax;
-				}
+			double mean = 0;
 
-			} while (ticksStart + 5000 > Java.Lang.JavaSystem.CurrentTimeMillis ());
+
+			for (int i = 1; i <= 5; i++) {
+				do {
+
+					if(maxG < _calibrMax)
+						maxG = _calibrMax;
+
+				} while((ticksStart + 1000 * i) > Java.Lang.JavaSystem.CurrentTimeMillis ());
+				mean += maxG;
+				maxG = 0;
+				if(_hasVibrator)
+					CrossVibrate.Current.Vibration (100);
+			}
+
 			if(_hasVibrator)
 				CrossVibrate.Current.Vibration (500);
-			return maxG;
+			return mean/5;
 
 		}
 	}
