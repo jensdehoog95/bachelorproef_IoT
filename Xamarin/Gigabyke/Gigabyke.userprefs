@@ -1,24 +1,30 @@
 ﻿<Properties StartupItem="Gigabyke/Gigabyke.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.AVD_GS3" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Gigabyke/GPS.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.SH44NWM07311" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Gigabyke/CalibrationActivity.cs">
     <Files>
-      <File FileName="Gigabyke/MainActivity.cs" Line="117" Column="132" />
-      <File FileName="Gigabyke/MQTT.cs" Line="7" Column="43" />
-      <File FileName="Gigabyke/Resources/values/Strings.xml" Line="1" Column="1" />
-      <File FileName="Gigabyke/PermissionUtil.cs" Line="1" Column="1" />
-      <File FileName="Gigabyke/RuntimePermissionsFragment.cs" Line="1" Column="1" />
-      <File FileName="Gigabyke/GPS.cs" Line="93" Column="76" />
+      <File FileName="Gigabyke/MainActivity.cs" Line="113" Column="22" />
+      <File FileName="Gigabyke/CalibrationActivity.cs" Line="14" Column="22" />
+      <File FileName="Gigabyke/Resources/Resource.designer.cs" Line="1" Column="1" />
+      <File FileName="Gigabyke/Resources/AboutResources.txt" Line="1" Column="1" />
+      <File FileName="Gigabyke/Resources/values/theme.xml" Line="20" Column="36" />
+      <File FileName="Gigabyke/Accelerometer.cs" Line="16" Column="22" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Gigabyke" expanded="True">
-            <Node name="Gigabyke" expanded="True" selected="True">
-              <Node name="References" expanded="True" />
+            <Node name="Gigabyke" expanded="True">
+              <Node name="References" expanded="True">
+                <Node name="From Packages" expanded="True" />
+              </Node>
               <Node name="ComponentReferenceFolder" expanded="True" />
               <Node name="Packages" expanded="True" />
-              <Node name="Assets" expanded="True" />
               <Node name="Properties" expanded="True" />
+              <Node name="Resources" expanded="True">
+                <Node name="layout" expanded="True" />
+                <Node name="values" expanded="True" />
+              </Node>
+              <Node name="CalibrationActivity.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -29,5 +35,5 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Gigabyke AndroidDesignerPreferredDevice="Nexus 4" AndroidDesignerPreferredTheme="Theme.Gigabyke" />
+  <MonoDevelop.Ide.ItemProperties.Gigabyke AndroidDesignerPreferredDevice="Nexus 4" AndroidDesignerPreferredTheme="Theme.DeviceDefault" />
 </Properties>

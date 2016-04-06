@@ -4,6 +4,8 @@ using Android.Locations;
 using Android.Widget;
 using Android.OS;
 using Android.Util;
+using Android.Support.Design.Widget;
+using Android.Views;
 using System;
 using System.IO;
 using System.Net.NetworkInformation;
@@ -52,7 +54,10 @@ namespace Gigabyke
 		 */
 		public void OnProviderDisabled(string provider) {}
 		public void OnProviderEnabled(string provider) {}
-		public void OnStatusChanged(string provider, Availability status, Bundle extras) {	}
+		public void OnStatusChanged(string provider, Availability status, Bundle extras) {	
+			//var linearLayout = FindViewById (Resource.Id.sn);
+
+		}
 
 		/*
 		 * GPS
@@ -73,6 +78,10 @@ namespace Gigabyke
 			{
 				// Als er location providers in de lijst staan: neem de eerste.
 				_locationProvider = acceptableLocationProviders.First();
+				//Snackbar.Make (FindViewById (Resource.Id.center), _locationProvider, Snackbar.LengthLong)
+				//	.SetAction ("OK", action => {
+				//	})
+				//	.Show ();
 			}
 			else
 			{

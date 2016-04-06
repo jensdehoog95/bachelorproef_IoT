@@ -1,8 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Paths>
   <Jars></Jars>
-  <ResolvedResourceDirectories />
-  <ResolvedAssetDirectories />
+  <ResolvedResourceDirectories>
+    <ResolvedResourceDirectory>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/__library_projects__/Refractored.GifImageView/library_project_imports/res</ResolvedResourceDirectory>
+    <ResolvedResourceDirectory>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/__library_projects__/Plugin.Vibrate/library_project_imports/res</ResolvedResourceDirectory>
+  </ResolvedResourceDirectories>
+  <ResolvedAssetDirectories>
+    <ResolvedAssetDirectory>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/__library_projects__/Refractored.GifImageView/library_project_imports/assets</ResolvedAssetDirectory>
+    <ResolvedAssetDirectory>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/__library_projects__/Plugin.Vibrate/library_project_imports/assets</ResolvedAssetDirectory>
+  </ResolvedAssetDirectories>
   <ResolvedEnvironmentFiles />
-  <ResolvedResourceDirectoryStamps />
+  <ResolvedResourceDirectoryStamps>
+    <ResolvedResourceDirectoryStamp>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/__library_projects__/Refractored.GifImageView.stamp</ResolvedResourceDirectoryStamp>
+    <ResolvedResourceDirectoryStamp>/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/Gigabyke/Gigabyke/obj/Debug/__library_projects__/Plugin.Vibrate.stamp</ResolvedResourceDirectoryStamp>
+  </ResolvedResourceDirectoryStamps>
 </Paths>

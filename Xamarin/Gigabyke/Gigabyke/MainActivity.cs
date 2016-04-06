@@ -8,14 +8,18 @@ using System;
 using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Support.V4.App;
+using Android.Content.PM;
+using Android.Content;
 
 namespace Gigabyke
 {
-	[Activity (Theme = "@style/Theme.Gigabyke", Label = "Gigabyke", MainLauncher = true, Icon = "@mipmap/icon")]
+	[Activity (Theme = "@style/Theme.Gigabyke", Label = "Gigabyke", MainLauncher = true, Icon = "@mipmap/icon", ScreenOrientation = ScreenOrientation.Portrait)]
 	public class MainActivity : Activity
 	{
 		const int stepSeekBar = 5;
+		bool _hasVibrator;
 
+		TextView _accValues;
 		TextView _accText;
 		TextView _gpsText;
 		TextView _sliderText;
@@ -23,6 +27,7 @@ namespace Gigabyke
 		EditText _topicText;
 		EditText _contentText;
 		Button _sendButton;
+		Button _calibrateButton;
 		SeekBar _slider;
 
 		Accelerometer accelerometer;
@@ -47,8 +52,10 @@ namespace Gigabyke
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
 
+			_accValues = FindViewById<TextView> (Resource.Id.accValues);
 			_accText = FindViewById<TextView> (Resource.Id.accView);
 			_gpsText = FindViewById<TextView> (Resource.Id.gpsView);
+
 			_sliderText = FindViewById<TextView> (Resource.Id.textSlider);
 			_maxText = FindViewById<TextView> (Resource.Id.textMax);
 
@@ -56,7 +63,13 @@ namespace Gigabyke
 			_contentText = FindViewById<EditText> (Resource.Id.contentText);
 
 			_sendButton = FindViewById<Button> (Resource.Id.sendButton);
+			_calibrateButton = FindViewById<Button> (Resource.Id.calibrateButton);
 			_slider = FindViewById<SeekBar> (Resource.Id.slider);
+
+			_maxText.TextSize = 65;
+
+			Vibrator vibrator = (Vibrator)GetSystemService (Context.VibratorService);
+			_hasVibrator = vibrator.HasVibrator;
 
 			_slider.ProgressChanged += delegate(object sender, SeekBar.ProgressChangedEventArgs e) {
 
@@ -68,16 +81,44 @@ namespace Gigabyke
 				_slider.Progress = ((int)newStep * stepSeekBar);
 			};
 
-			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService), _accText, _maxText);
+			_calibrateButton.Click += (sender, e) => {
+
+				accelerometer.stopAccelerometer();
+
+				// Maak een overgang klaar naar de nieuwe activiteit
+				var second = new Android.Content.Intent(this,typeof(CalibrationActivity));
+
+				// Geef aan de overgang een request nummer mee, in dit geval '1'
+				StartActivityForResult(second,1);
+
+				// Overschrijf de overgangsanimatie met een nieuwe animatie
+				OverridePendingTransition(Resource.Animation.abc_popup_enter,Resource.Animation.abc_slide_out_bottom);
+			};
+
+			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _hasVibrator);
 			gps = new GPS ((LocationManager)GetSystemService (LocationService), _gpsText);
 			initLocationManager ();
 
 		}
 
+		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data) {
+			if (resultCode == Result.Ok && requestCode == 1) {
+
+				// Verkrijg de factor die door de tweede activiteit wordt meegegeven
+				double factor = data.GetDoubleExtra ("CalibrationFactor", 0);
+
+				// Stel die factor in in de accelerometer
+				accelerometer.setFactor (factor);
+
+				// Start de meter
+				accelerometer.startAccelerometer ();
+			}
+		}
+
 		protected override void OnPause ()
 		{
 			base.OnPause ();
-			accelerometer.stopAccelerometer();
+			//accelerometer.stopAccelerometer();
 			gps.stopGPS ();
 		}
 
