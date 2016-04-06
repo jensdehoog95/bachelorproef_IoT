@@ -31,6 +31,10 @@ namespace Gigabyke
 		private bool _calibrationActive = false;
 		private bool _hasVibrator = false;
 
+		private int counter;
+		private double elapsed;
+		private Stopwatch sw;
+
 		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
 		{
 			this._sensorManager = manager;
@@ -40,6 +44,10 @@ namespace Gigabyke
 			this._max = max;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
+			this.sw = new Stopwatch();
+			sw.Start();
+			this.counter = 0;
+			this.elapsed = 0;
 
 		}
 
@@ -82,9 +90,38 @@ namespace Gigabyke
 						double newG = (Math.Sqrt (Math.Pow (e.Values [0], 2) + Math.Pow (e.Values [1], 2) + Math.Pow (e.Values [2], 2)) - 9.81) * _factor;
 						_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e.Values [0], e.Values [1], e.Values [2]);
 						_gforceView.Text = string.Format ("G Force: {0:f}", newG);
+
+						elapsed = sw.ElapsedMilliseconds;
 						if (newG > _thresholdMeter) {
-							_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
-							_max.Text = string.Format ("{0:f2}", newG);
+							if (elapsed >= 1500) {
+								if (counter == 2) {
+									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+									_max.Text = g.ToString ();
+									sw.Restart ();
+									counter = 0;
+								} else if (counter == 4) {
+									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+									_max.Text = counter.ToString ();
+									sw.Restart ();
+									counter = 0;
+								} else if (counter > 4) {
+									_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+									_max.Text = counter.ToString ();
+									sw.Restart ();
+									counter = 0;
+								} else {
+									_max.Text = counter.ToString ();
+									sw.Restart ();
+									counter = 0;
+								}
+							}
+							if (elapsed > 5000) {
+								sw.Restart ();
+								counter = 0;
+							}
+
+							//_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+							//_max.Text = string.Format ("{0:f2}", newG);
 							if (_hasVibrator)
 								CrossVibrate.Current.Vibration (100);
 						} else {
