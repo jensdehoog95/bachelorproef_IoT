@@ -30,12 +30,12 @@ namespace Gigabyke
 		private double _factor;
 		private bool _calibrationActive = false;
 		private bool _hasVibrator = false;
-		private int grotePutCounter = 0;
+		private int _grotePutCounter = 0;
 
-		private int counter;
-		private double elapsed;
-		private Stopwatch sw;
-		private Stopwatch putWatch;
+		private int _counter;
+		private double _elapsed;
+		private Stopwatch _sw;
+		private Stopwatch _putWatch;
 
 		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
 		{
@@ -46,26 +46,20 @@ namespace Gigabyke
 			this._max = max;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
-			this.sw = new Stopwatch();
-			//sw.Start();
-			this.counter = 0;
-			this.elapsed = 0;
-			this.putWatch = new Stopwatch ();
+			this._sw = new Stopwatch();
+			this._counter = 0;
+			this._elapsed = 0;
+			this._putWatch = new Stopwatch ();
 
 		}
 
 		public Accelerometer (SensorManager manager, bool hasVibrator)
 		{
 			this._sensorManager = manager;
-			this._accValues = null;
-			this._gforceView = null;
 			this._thresholdMeter = 13;
-			this._max = null;
 			this._calibrationActive = true;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
-			this.sw = new Stopwatch ();
-			this.putWatch = new Stopwatch ();
 		}
 
 		/*
@@ -85,65 +79,20 @@ namespace Gigabyke
 		{
 			lock (_syncLock)
 			{
-				// Parse de waardes van 'e' naar een mooie string
-				double g = Math.Sqrt (Math.Pow (e.Values [0], 2) + Math.Pow (e.Values [1], 2) + Math.Pow (e.Values [2], 2));
-				double tempTreshold = _thresholdMeter;
-
 				if (_calibrationActive == false) {
 					if (_factor == 0) {
 						_accValues.Text = "Eerst kalibreren aub";
 						_gforceView.Text = "";
 					} else {
-						double newG = (g - 9.81) * _factor;
-						_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e.Values [0], e.Values [1], e.Values [2]);
-						_gforceView.Text = string.Format ("G Force: {0:f}", newG);
-
-						elapsed = sw.ElapsedMilliseconds;
-						if (newG > _thresholdMeter) {
-							counter++;
-							putWatch.Start ();
-							if (_hasVibrator)
-								CrossVibrate.Current.Vibration (100);
-							
-						} else {
-							if (elapsed >= 1250) {
-								if (counter >= 2 && counter <= 4) {
-									_max.Text = "PUT!";
-								} else if (counter > 4) {
-									_max.Text = counter.ToString ();
-									tempTreshold = _thresholdMeter;
-									_thresholdMeter = 3;
-								} else {
-									_max.Text = "";
-									_thresholdMeter = tempTreshold;
-									grotePutCounter = 0;
-								}
-								putWatch.Reset ();
-								sw.Restart ();
-								counter = 0;
-							} 
-
-							if (counter >= 5 && counter <= 8) {
-								if (putWatch.ElapsedMilliseconds <= 650) {
-									if (grotePutCounter >= 1) {
-										_max.Text = counter.ToString ();
-									} else {
-										_max.Text = "GROTE PUT!";
-										Task.Delay (500);
-										grotePutCounter++;
-										putWatch.Reset ();
-										sw.Restart ();
-										counter = 0;
-									}
-								}
-							}
-							_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
-						}
+						processAlgorithm (e.Values [0], e.Values [1], e.Values [2]);
 					}
 				} else {
+					double g = Math.Sqrt (
+						Math.Pow (e.Values [0], 2) + 
+						Math.Pow (e.Values [1], 2) + 
+						Math.Pow (e.Values [2], 2));
 					if (g > _thresholdMeter) {
 						_calibrMax = g;
-						//CrossVibrate.Current.Vibration (100);
 					}
 				}
 			}
@@ -157,8 +106,9 @@ namespace Gigabyke
 			_sensorManager.RegisterListener (this,
 				_sensorManager.GetDefaultSensor (SensorType.Accelerometer),
 				SensorDelay.Ui);
-			sw.Reset ();
-			sw.Start ();
+
+			if (!_calibrationActive)
+				_sw.Restart();
 		}
 
 		public void setFactor(double factor) {
@@ -170,8 +120,6 @@ namespace Gigabyke
 		}
 
 		public double calibrate() {
-			bool proceed = false;
-
 			double ticksStart = Java.Lang.JavaSystem.CurrentTimeMillis();
 			double maxG = 0;
 			double mean = 0;
@@ -194,6 +142,64 @@ namespace Gigabyke
 				CrossVibrate.Current.Vibration (500);
 			return mean/5;
 
+		}
+
+		private void processAlgorithm(float e1, float e2, float e3) {
+			double newG = (Math.Sqrt (Math.Pow (e1, 2) + Math.Pow (e2, 2) + Math.Pow (e3, 2)) - 9.81) * _factor;
+			double tempTreshold = _thresholdMeter;
+
+			_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e1, e2, e3);
+			_gforceView.Text = string.Format ("G Force: {0:f}", newG);
+
+			_elapsed = _sw.ElapsedMilliseconds;
+			if (newG > _thresholdMeter) {
+				_counter++;
+				_putWatch.Start ();
+				vibrate (100);
+
+			} else {
+				if (_elapsed >= 1250) {
+					String maxText;
+					if (_counter >= 2 && _counter <= 4) {
+						maxText = "PUT!";
+					} else if (_counter > 4) {
+						maxText = _counter.ToString ();
+						tempTreshold = _thresholdMeter;
+						_thresholdMeter = 3;
+					} else {
+						maxText = "";
+						_thresholdMeter = tempTreshold;
+						_grotePutCounter = 0;
+					}
+					_max.Text = maxText;
+					restartMeasurement ();
+				} 
+
+				if (_counter >= 5 && _counter <= 8) {
+					if (_putWatch.ElapsedMilliseconds <= 650) {
+						if (_grotePutCounter >= 1) {
+							_max.Text = _counter.ToString ();
+						} else {
+							_max.Text = "GROTE PUT!";
+							//Task.Delay (500);
+							_grotePutCounter++;
+							restartMeasurement ();
+						}
+					}
+				}
+				_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
+			}
+		}
+
+		public void vibrate(int duration) {
+			if(_hasVibrator)
+				CrossVibrate.Current.Vibration (duration);
+		}
+
+		public void restartMeasurement() {
+			_putWatch.Reset ();
+			_sw.Restart ();
+			_counter = 0;
 		}
 	}
 }
