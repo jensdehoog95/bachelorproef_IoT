@@ -144,8 +144,12 @@ namespace Gigabyke
 
 		}
 
+		/*
+		 * Algoritme om putten in het wegdek te detecteren
+		 */
 		private void processAlgorithm(float e1, float e2, float e3) {
 			double newG = (Math.Sqrt (Math.Pow (e1, 2) + Math.Pow (e2, 2) + Math.Pow (e3, 2)) - 9.81) * _factor;
+			// Bereken de newG die vergeleken moet worden met de threshold
 			double tempTreshold = _thresholdMeter;
 
 			_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e1, e2, e3);
@@ -153,20 +157,26 @@ namespace Gigabyke
 
 			_elapsed = _sw.ElapsedMilliseconds;
 			if (newG > _thresholdMeter) {
+				//Als de newG groter is dan de threshold, dan verhogen we de counter en starten we de putWatch
 				_counter++;
 				_putWatch.Start ();
 				vibrate (100);
 
 			} else {
 				if (_elapsed >= 1250) {
+					//Check of de verstreken tijd gelijk of groter is dan 1,25s
 					String maxText;
 					if (_counter >= 2 && _counter <= 4) {
+						//Bij een lage counter hebben we te maken met een gewone put
 						maxText = "PUT!";
 					} else if (_counter > 4) {
+						//Bij een hoge counter hebben we te maken met een kasseiweg
+						//We verlagen daarom onze threshold naar 3 om goed te kunnen detecteren
 						maxText = _counter.ToString ();
 						tempTreshold = _thresholdMeter;
 						_thresholdMeter = 3;
 					} else {
+						//Een counter van 1 of een andere onverwachte waarde negeren we
 						maxText = "";
 						_thresholdMeter = tempTreshold;
 						_grotePutCounter = 0;
@@ -177,9 +187,12 @@ namespace Gigabyke
 
 				if (_counter >= 5 && _counter <= 8) {
 					if (_putWatch.ElapsedMilliseconds <= 650) {
+						//Bij een grote counter op korte tijd hebben we te maken met een grote put
 						if (_grotePutCounter >= 1) {
+							//Er mag maar 1 grote put op de korte tijd gedetecteerd worden. Alle anderen worden genegeerd
 							_max.Text = _counter.ToString ();
 						} else {
+							//Verhoog de grotePutCounter en voer restartMeasurement uit
 							_max.Text = "GROTE PUT!";
 							//Task.Delay (500);
 							_grotePutCounter++;
@@ -196,6 +209,9 @@ namespace Gigabyke
 				CrossVibrate.Current.Vibration (duration);
 		}
 
+		/*
+		 * Reset voor de stopwatches en zet de counter terug op 0 
+		 */
 		public void restartMeasurement() {
 			_putWatch.Reset ();
 			_sw.Restart ();
