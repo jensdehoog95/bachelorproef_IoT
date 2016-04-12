@@ -21,7 +21,6 @@ C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\bin\Debug\Plu
 C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\bin\Debug\Plugin.Vibrate.xml
 C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\bin\Debug\Plugin.Vibrate.dll.mdb
 C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\obj\Debug\Gigabyke.csprojResolveAssemblyReference.cache
 C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\obj\Debug\Gigabyke.dll
 C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\obj\Debug\Gigabyke.pdb
 C:\Users\Kevin\Desktop\bachelorproef_IoT\Xamarin\Gigabyke\Gigabyke\obj\Debug\android\bin\com.bachelorproefiot.gigabyke.apk

@@ -24,7 +24,7 @@ namespace Gigabyke
 		private TextView _accValues;
 		private TextView _gforceView;
 		private TextView _max;
-		private Queue<Events> _eventQueue;
+		private Queue<Events> _eventQueue = new Queue<Events>();
 
 		private double _thresholdMeter;
 		private double _calibrMax;
@@ -37,7 +37,6 @@ namespace Gigabyke
 		private double _elapsed;
 		private Stopwatch _sw;
 		private Stopwatch _putWatch;
-		private int _idEvents;
 		private Events events;
 
 		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
@@ -53,8 +52,6 @@ namespace Gigabyke
 			this._counter = 0;
 			this._elapsed = 0;
 			this._putWatch = new Stopwatch ();
-			this._idEvents = 0;
-
 		}
 
 		public Accelerometer (SensorManager manager, bool hasVibrator)
@@ -161,8 +158,47 @@ namespace Gigabyke
 
 			_elapsed = _sw.ElapsedMilliseconds;
 			if (newG > _thresholdMeter) {
-				events = new Events (_idEvents + 1, _elapsed);
+				events = new Events (1, _elapsed, newG);
 				_eventQueue.Enqueue (events);
+				double difference = 0;
+				int oneTime = 0;
+				double initialValue = 0;
+				foreach (Events ev in _eventQueue) 
+				{
+					if (oneTime == 0) {
+						oneTime++;
+						initialValue = ev.getMilliseconds();
+					}
+					double time = ev.getMilliseconds();
+					difference = time - initialValue;
+					_counter++;
+					if (difference >= 1250) {
+						/*for (int i = 0; i < _counter; i++) {
+							_eventQueue.Dequeue ();
+						}*/
+						String maxText = "";
+						if (_counter >= 2 && _counter <= 4) {
+							maxText = "PUT!";
+						} else if (_counter > 4) {
+							maxText = "KASSEIWEG!";
+						}
+						oneTime = 0;
+						_counter = 0;
+						_max.Text = maxText;
+					}
+					if (_counter >= 5 && _counter <= 8) {
+						if (difference <= 650) {
+							_max.Text = "GROTE PUT!";
+							oneTime = 0;
+							_counter = 0;
+							/*for (int i = 0; i < _counter; i++) {
+								_eventQueue.Dequeue ();
+							}*/
+						}
+					}
+
+				}
+					
 				//Als de newG groter is dan de threshold, dan verhogen we de counter en starten we de putWatch
 				_counter++;
 				_putWatch.Start ();
