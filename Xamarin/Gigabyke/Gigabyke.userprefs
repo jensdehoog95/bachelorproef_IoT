@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="Gigabyke\Gigabyke.csproj">
+<Properties StartupItem="Gigabyke\Gigabyke.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.Xamarin_Android_API_23" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Gigabyke\Accelerometer.cs">
     <Files>
