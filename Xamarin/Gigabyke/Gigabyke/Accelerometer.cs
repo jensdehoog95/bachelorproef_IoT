@@ -28,6 +28,7 @@ namespace Gigabyke
 		private Queue<Events> _eventQueue = new Queue<Events>();
 
 		private double _thresholdMeter;
+		private double _thresholdMeterBackup;
 		private double _calibrMax;
 		private double _factor;
 		private bool _calibrationActive = false;
@@ -47,6 +48,7 @@ namespace Gigabyke
 			this._accValues = values;
 			this._gforceView = gforce;
 			this._thresholdMeter = 1;
+			this._thresholdMeterBackup = 1;
 			this._max = max;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
@@ -60,6 +62,7 @@ namespace Gigabyke
 		{
 			this._sensorManager = manager;
 			this._thresholdMeter = 13;
+			this._thresholdMeterBackup = 13;
 			this._calibrationActive = true;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
@@ -126,6 +129,7 @@ namespace Gigabyke
 
 		public void setThreshold(double thresh) {
 			this._thresholdMeter = thresh;
+			this._thresholdMeterBackup = thresh;
 		}
 
 		public double calibrate() {
@@ -270,20 +274,20 @@ namespace Gigabyke
 				() => {
 					ArrayList listEvents = new ArrayList ();
 					int resetCounter = 0;
-					double tempThreshold = _thresholdMeter;
 					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
 					while (!_stopAcc) {
 						if (_eventQueue.Count <= 1) {
 							Java.Lang.Thread.Sleep(1000);
 							resetCounter++;
-							if (resetCounter >= 2 && tempThreshold != _thresholdMeter) {
-								_thresholdMeter = tempThreshold;
+							if (resetCounter >= 2 && _thresholdMeterBackup != _thresholdMeter) {
+								_thresholdMeter = _thresholdMeterBackup;
 								Console.WriteLine(_thresholdMeter);
 								resetCounter = 0;
 							}
-							Console.WriteLine(_thresholdMeter);
+							//Console.WriteLine(_thresholdMeter);
 							Console.WriteLine ("ExecuteThread: wachten op events");
 						} else {
+							resetCounter = 0;
 							Events ev = _eventQueue.Peek ();
 							if (ev.getID () == 1) {
 								listEvents.Add (_eventQueue.Dequeue ());
@@ -329,6 +333,7 @@ namespace Gigabyke
 					return 3;
 				} else {
 					setMaxText("KASSEIWEG");
+					_thresholdMeter = 3;
 					return 4;
 				}
 			} else {
@@ -342,12 +347,6 @@ namespace Gigabyke
 		public void setMaxText(string tekst) {
 			RunOnUiThread (() => {
 				_max.Text = tekst;
-			});
-
-			Java.Lang.Thread.Sleep(500);
-
-			RunOnUiThread (() => {
-				_max.Text = "";
 			});
 		}
 	}
