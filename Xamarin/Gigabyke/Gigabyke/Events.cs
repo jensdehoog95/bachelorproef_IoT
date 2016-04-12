@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿using System;
 
 namespace Gigabyke
@@ -6,38 +5,17 @@ namespace Gigabyke
 	public class Events
 	{
 		private int _id;
-		private double _milliseconds;
-
-		public Events (int id,double timeElapsed)
-		{
-			this._id = id;
-			this._milliseconds = timeElapsed;
-		}
-
-
-
-	}
-}
-
-=======
-﻿using System;
-
-namespace Gigabyke
-{
-	public class Events
-	{
-		private int _id;
-		private double _milliseconds;
+		private long _milliseconds;
 		private double _magnitude;
 
-		public Events (int id, double timeElapsed, double mag)
+		public Events (int id, long timeElapsed, double mag)
 		{
 			this._id = id;
 			this._milliseconds = timeElapsed;
 			this._magnitude = mag;
 		}
 
-		public double getMilliseconds()
+		public long getMilliseconds()
 		{
 			return _milliseconds;
 		}
@@ -54,5 +32,3 @@ namespace Gigabyke
 
 	}
 }
-
->>>>>>> 04ec3ff0f979e8ef6ff253790fbc271fa875604c

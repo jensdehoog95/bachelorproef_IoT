@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,10 +33,10 @@ namespace Gigabyke
 		private bool _calibrationActive = false;
 		private bool _hasVibrator = false;
 		private int _grotePutCounter = 0;
-		private bool _stopAcc;
+		private bool _stopAcc = false;
 
 		private int _counter;
-		private double _elapsed;
+		private long _elapsed;
 		private Stopwatch _sw;
 		private Stopwatch _putWatch;
 		private Events events;
@@ -101,16 +102,22 @@ namespace Gigabyke
 		}
 
 		public void stopAccelerometer() {
+			_stopAcc = true;
 			_sensorManager.UnregisterListener (this);
 		}
 
 		public void startAccelerometer() {
+			Console.WriteLine ("Accelerometer starten");
+			_stopAcc = false;
 			_sensorManager.RegisterListener (this,
 				_sensorManager.GetDefaultSensor (SensorType.Accelerometer),
 				SensorDelay.Ui);
 
-			if (!_calibrationActive)
-				_sw.Restart();
+			if (!_calibrationActive) {
+				_sw.Restart ();
+				executeThread ();
+			}
+			Console.WriteLine ("Accelerometer gestart");
 		}
 
 		public void setFactor(double factor) {
@@ -157,10 +164,12 @@ namespace Gigabyke
 			_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e1, e2, e3);
 			_gforceView.Text = string.Format ("G Force: {0:f}", newG);
 
-			_elapsed = _sw.ElapsedMilliseconds;
+			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
 			if (newG > _thresholdMeter) {
 				events = new Events (1, _elapsed, newG);
 				_eventQueue.Enqueue (events);
+				vibrate (100);
+				/*
 				double difference = 0;
 				int oneTime = 0;
 				double initialValue = 0;
@@ -174,9 +183,6 @@ namespace Gigabyke
 					difference = time - initialValue;
 					_counter++;
 					if (difference >= 1250) {
-						/*for (int i = 0; i < _counter; i++) {
-							_eventQueue.Dequeue ();
-						}*/
 						String maxText = "";
 						if (_counter >= 2 && _counter <= 4) {
 							maxText = "PUT!";
@@ -192,9 +198,6 @@ namespace Gigabyke
 							_max.Text = "GROTE PUT!";
 							oneTime = 0;
 							_counter = 0;
-							/*for (int i = 0; i < _counter; i++) {
-								_eventQueue.Dequeue ();
-							}*/
 						}
 					}
 
@@ -242,7 +245,7 @@ namespace Gigabyke
 							restartMeasurement ();
 						}
 					}
-				}
+				} */
 				_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
 			}
 		}
@@ -262,12 +265,90 @@ namespace Gigabyke
 		}
 
 		public void executeThread() {
-			Task.Factory.StartNew (
+			Console.WriteLine ("ExecuteThread: Thread starten");
+			new System.Threading.Thread (new System.Threading.ThreadStart (
 				() => {
-					
+					ArrayList listEvents = new ArrayList ();
+					int resetCounter = 0;
+					double tempThreshold = _thresholdMeter;
+					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
+					while (!_stopAcc) {
+						if (_eventQueue.Count <= 1) {
+							Java.Lang.Thread.Sleep(1000);
+							resetCounter++;
+							if (resetCounter >= 2 && tempThreshold != _thresholdMeter) {
+								_thresholdMeter = tempThreshold;
+								Console.WriteLine(_thresholdMeter);
+								resetCounter = 0;
+							}
+							Console.WriteLine(_thresholdMeter);
+							Console.WriteLine ("ExecuteThread: wachten op events");
+						} else {
+							Events ev = _eventQueue.Peek ();
+							if (ev.getID () == 1) {
+								listEvents.Add (_eventQueue.Dequeue ());
+								long millis = ev.getMilliseconds ();
+								bool stopWhile = false;
+								while(!stopWhile && _eventQueue.Count > 1) {
+									Events secEv = _eventQueue.Peek ();
+									if (secEv.getMilliseconds () - millis <= 1250) {
+										listEvents.Add (_eventQueue.Dequeue ());
+										Console.WriteLine("ExecuteThread: geschreven naar ArrayList");
+									} else {
+										stopWhile = true;
+									} 
+								}
+							}
+							//setMaxText("Processing");
+							processList (listEvents);
+							listEvents.Clear();
+						}
+					}
+					Console.WriteLine ("Thread gestopt");
 				}
-			);
+			)).Start ();
+			Console.WriteLine ("Thread gestart");
+		}
+
+		public int processList(ArrayList list) {
+			Events firstEvent = (Events) list [0];
+			Events lastEvent = (Events) list [list.Count - 1];
+
+
+			if(list.Count == 1) {
+				// Gewoon negeren
+				setMaxText ("");
+				return 1;
+
+			} else if (list.Count >= 2 && list.Count <= 4) {
+				setMaxText("PUT!");
+				return 2;
+			} else if (list.Count >= 5 && list.Count <= 8) {
+				if (lastEvent.getMilliseconds() - firstEvent.getMilliseconds() <= 650) {
+					setMaxText("GROTE PUT!");
+					return 3;
+				} else {
+					setMaxText("KASSEIWEG");
+					return 4;
+				}
+			} else {
+				setMaxText("KASSEIWEG");
+				Console.WriteLine ("Threshold op 3 gezet");
+				_thresholdMeter = 3;
+				return 4;
+			}
+		}
+
+		public void setMaxText(string tekst) {
+			RunOnUiThread (() => {
+				_max.Text = tekst;
+			});
+
+			Java.Lang.Thread.Sleep(500);
+
+			RunOnUiThread (() => {
+				_max.Text = "";
+			});
 		}
 	}
 }
-
