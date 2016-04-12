@@ -24,6 +24,7 @@ namespace Gigabyke
 		private TextView _accValues;
 		private TextView _gforceView;
 		private TextView _max;
+		private Queue<Events> _eventQueue;
 
 		private double _thresholdMeter;
 		private double _calibrMax;
@@ -36,6 +37,8 @@ namespace Gigabyke
 		private double _elapsed;
 		private Stopwatch _sw;
 		private Stopwatch _putWatch;
+		private int _idEvents;
+		private Events events;
 
 		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
 		{
@@ -50,6 +53,7 @@ namespace Gigabyke
 			this._counter = 0;
 			this._elapsed = 0;
 			this._putWatch = new Stopwatch ();
+			this._idEvents = 0;
 
 		}
 
@@ -157,6 +161,8 @@ namespace Gigabyke
 
 			_elapsed = _sw.ElapsedMilliseconds;
 			if (newG > _thresholdMeter) {
+				events = new Events (_idEvents + 1, _elapsed);
+				_eventQueue.Enqueue (events);
 				//Als de newG groter is dan de threshold, dan verhogen we de counter en starten we de putWatch
 				_counter++;
 				_putWatch.Start ();

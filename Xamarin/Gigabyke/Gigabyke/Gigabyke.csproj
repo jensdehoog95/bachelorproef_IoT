@@ -88,6 +88,7 @@
     <Compile Include="GPS.cs" />
     <Compile Include="PermissionUtil.cs" />
     <Compile Include="CalibrationActivity.cs" />
+    <Compile Include="Events.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
