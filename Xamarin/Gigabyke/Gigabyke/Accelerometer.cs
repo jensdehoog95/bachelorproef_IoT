@@ -280,14 +280,11 @@ namespace Gigabyke
 					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
 					while (!_stopAcc) {
 						Java.Lang.Thread.Sleep(1000);
-
-						Console.WriteLine(_eventQueue.Count);
 						if (_eventQueue.Count <= 1) {
 							resetCounter++;
 							_grotePutCounter = 0;
 							if (resetCounter >= 5 && _thresholdMeterBackup != _thresholdMeter) {
 								_thresholdMeter = _thresholdMeterBackup;
-								Console.WriteLine(_thresholdMeter);
 								resetCounter = 0;
 								setMaxText("");
 							} else if( resetCounter >= 5){
@@ -295,7 +292,6 @@ namespace Gigabyke
 								resetCounter = 0;
 								setMaxText("");
 							}
-							//Console.WriteLine(_thresholdMeter);
 							Console.WriteLine ("ExecuteThread: wachten op events");
 						} else {
 							
@@ -314,7 +310,6 @@ namespace Gigabyke
 									} 
 								}
 							}
-							//setMaxText("Processing");
 							processList (listEvents);
 							resetCounter = 0;
 							listEvents.Clear();
@@ -367,8 +362,6 @@ namespace Gigabyke
 		public void setMaxText(string tekst) {
 			RunOnUiThread (() => {
 				_max.Text = tekst;
-				//Task.Delay(1000);
-				//_max.Text = "";
 			});
 		}
 	}
