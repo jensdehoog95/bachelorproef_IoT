@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Gigabyke/Gigabyke.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.AVD_GS3" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Gigabyke/Accelerometer.cs">
+    <Files>
+      <File FileName="Gigabyke/Accelerometer.cs" Line="298" Column="9" />
+      <File FileName="Gigabyke/Events.cs" Line="1" Column="1" />
+      <File FileName="Gigabyke/Resources/values/Strings.xml" Line="1" Column="1" />
+      <File FileName="Gigabyke/CalibrationActivity.cs" Line="1" Column="1" />
+      <File FileName="Gigabyke/MainActivity.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -1,0 +1,6 @@
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/JarBinding/JarBinding/obj/Debug/MonoAndroid,Version=v6.0.AssemblyAttribute.cs
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/JarBinding/JarBinding/obj/Debug/JarBinding.Jars.org.eclipse.paho.client.mqttv3-1.0.2.jar
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/JarBinding/JarBinding/bin/Debug/JarBinding.dll.mdb
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/JarBinding/JarBinding/bin/Debug/JarBinding.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/JarBinding/JarBinding/obj/Debug/JarBinding.dll
+/Users/jensdehoog/Documents/Map School/Semester 6/Bachelorproef/Github/Xamarin/JarBinding/JarBinding/obj/Debug/JarBinding.dll.mdb
