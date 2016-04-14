@@ -250,11 +250,8 @@ namespace Gigabyke
 						}
 					}
 				} */
-				_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);//.Transparent);
-			} else {
 				_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
 			}
-
 		}
 
 		public void vibrate(int duration) {
@@ -279,33 +276,26 @@ namespace Gigabyke
 					int resetCounter = 0;
 					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
 					while (!_stopAcc) {
-						Java.Lang.Thread.Sleep(1000);
-
-						Console.WriteLine(_eventQueue.Count);
 						if (_eventQueue.Count <= 1) {
+							Java.Lang.Thread.Sleep(1000);
 							resetCounter++;
-							if (resetCounter >= 5 && _thresholdMeterBackup != _thresholdMeter) {
+							if (resetCounter >= 2 && _thresholdMeterBackup != _thresholdMeter) {
 								_thresholdMeter = _thresholdMeterBackup;
 								Console.WriteLine(_thresholdMeter);
 								resetCounter = 0;
-								setMaxText("");
-							} else if( resetCounter >= 5){
-								_eventQueue.Clear();
-								resetCounter = 0;
-								setMaxText("");
 							}
 							//Console.WriteLine(_thresholdMeter);
 							Console.WriteLine ("ExecuteThread: wachten op events");
 						} else {
-							
+							resetCounter = 0;
 							Events ev = _eventQueue.Peek ();
 							if (ev.getID () == 1) {
 								listEvents.Add (_eventQueue.Dequeue ());
 								long millis = ev.getMilliseconds ();
 								bool stopWhile = false;
-								while(!stopWhile && _eventQueue.Count > 0) {
+								while(!stopWhile && _eventQueue.Count > 1) {
 									Events secEv = _eventQueue.Peek ();
-									if (secEv.getMilliseconds () - millis <= 500) {
+									if (secEv.getMilliseconds () - millis <= 1250) {
 										listEvents.Add (_eventQueue.Dequeue ());
 										Console.WriteLine("ExecuteThread: geschreven naar ArrayList");
 									} else {
@@ -315,7 +305,6 @@ namespace Gigabyke
 							}
 							//setMaxText("Processing");
 							processList (listEvents);
-							resetCounter = 0;
 							listEvents.Clear();
 						}
 					}
@@ -328,6 +317,7 @@ namespace Gigabyke
 		public int processList(ArrayList list) {
 			Events firstEvent = (Events) list [0];
 			Events lastEvent = (Events) list [list.Count - 1];
+
 
 			if(list.Count == 1) {
 				// Gewoon negeren
@@ -357,8 +347,6 @@ namespace Gigabyke
 		public void setMaxText(string tekst) {
 			RunOnUiThread (() => {
 				_max.Text = tekst;
-				//Task.Delay(1000);
-				//_max.Text = "";
 			});
 		}
 	}
