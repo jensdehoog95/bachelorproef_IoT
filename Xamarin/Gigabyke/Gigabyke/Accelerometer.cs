@@ -172,6 +172,29 @@ namespace Gigabyke
 			if (newG > _thresholdMeter) {
 				events = new Events (1, _elapsed, newG);
 				_eventQueue.Enqueue (events);
+				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+				FileStream fs = null;
+				if(!File.Exists(path.ToString() + "/magnitudes.txt")) {
+					fs = File.Create(path.ToString() + "/magnitudes.txt");
+				} else {
+					fs = File.Open (path.ToString()+ "/magnitudes.txt",FileMode.Append);
+				}
+				StreamWriter sw = new StreamWriter(fs);
+				sw.WriteLine(newG);
+				sw.Flush();
+				sw.Close();
+
+				FileStream fs1 = null;
+				if(!File.Exists(path.ToString() + "/time.txt")) {
+					fs1 = File.Create(path.ToString() + "/time.txt");
+
+				} else {
+					fs1 = File.Open (path.ToString()+ "/time.txt",FileMode.Append);
+				}
+				StreamWriter sw1 = new StreamWriter(fs1);
+				sw1.WriteLine(_elapsed);
+				sw1.Flush();
+				sw1.Close();
 				vibrate (100);
 				/*
 				double difference = 0;
