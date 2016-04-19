@@ -15,12 +15,14 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using Plugin.Vibrate;
+using System.Threading;
 
 namespace Gigabyke
 {
 	public class Accelerometer : Activity, Java.IO.ISerializable, ISensorEventListener
 	{
 		private static readonly object _syncLock = new object();
+		private static readonly object _queueLock = new object ();
 		private SensorManager _sensorManager;
 		private TextView _accValues;
 		private TextView _gforceView;
@@ -169,88 +171,11 @@ namespace Gigabyke
 			_gforceView.Text = string.Format ("G Force: {0:f}", newG);
 
 			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
-			if (newG > _thresholdMeter) {
+			if (newG > 3) {
 				events = new Events (1, _elapsed, newG);
 				_eventQueue.Enqueue (events);
-				vibrate (100);
-				/*
-				double difference = 0;
-				int oneTime = 0;
-				double initialValue = 0;
-				foreach (Events ev in _eventQueue) 
-				{
-					if (oneTime == 0) {
-						oneTime++;
-						initialValue = ev.getMilliseconds();
-					}
-					double time = ev.getMilliseconds();
-					difference = time - initialValue;
-					_counter++;
-					if (difference >= 1250) {
-						String maxText = "";
-						if (_counter >= 2 && _counter <= 4) {
-							maxText = "PUT!";
-						} else if (_counter > 4) {
-							maxText = "KASSEIWEG!";
-						}
-						oneTime = 0;
-						_counter = 0;
-						_max.Text = maxText;
-					}
-					if (_counter >= 5 && _counter <= 8) {
-						if (difference <= 650) {
-							_max.Text = "GROTE PUT!";
-							oneTime = 0;
-							_counter = 0;
-						}
-					}
-
-				}
-					
-				//Als de newG groter is dan de threshold, dan verhogen we de counter en starten we de putWatch
-				_counter++;
-				_putWatch.Start ();
-				vibrate (100);
-
-			} else {
-				if (_elapsed >= 1250) {
-					//Check of de verstreken tijd gelijk of groter is dan 1,25s
-					String maxText;
-					if (_counter >= 2 && _counter <= 4) {
-						//Bij een lage counter hebben we te maken met een gewone put
-						maxText = "PUT!";
-					} else if (_counter > 4) {
-						//Bij een hoge counter hebben we te maken met een kasseiweg
-						//We verlagen daarom onze threshold naar 3 om goed te kunnen detecteren
-						maxText = _counter.ToString ();
-						tempTreshold = _thresholdMeter;
-						_thresholdMeter = 3;
-					} else {
-						//Een counter van 1 of een andere onverwachte waarde negeren we
-						maxText = "";
-						_thresholdMeter = tempTreshold;
-						_grotePutCounter = 0;
-					}
-					_max.Text = maxText;
-					restartMeasurement ();
-				} 
-
-				if (_counter >= 5 && _counter <= 8) {
-					if (_putWatch.ElapsedMilliseconds <= 650) {
-						//Bij een grote counter op korte tijd hebben we te maken met een grote put
-						if (_grotePutCounter >= 1) {
-							//Er mag maar 1 grote put op de korte tijd gedetecteerd worden. Alle anderen worden genegeerd
-							_max.Text = _counter.ToString ();
-						} else {
-							//Verhoog de grotePutCounter en voer restartMeasurement uit
-							_max.Text = "GROTE PUT!";
-							//Task.Delay (500);
-							_grotePutCounter++;
-							restartMeasurement ();
-						}
-					}
-				} */
-				_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);//.Transparent);
+				vibrate (50);
+				_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
 			} else {
 				_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
 			}
@@ -276,43 +201,20 @@ namespace Gigabyke
 			new System.Threading.Thread (new System.Threading.ThreadStart (
 				() => {
 					ArrayList listEvents = new ArrayList ();
-					int resetCounter = 0;
+					int resetCounter = 0; bool prevWasHigh = false;
 					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
 					while (!_stopAcc) {
-						Java.Lang.Thread.Sleep(1000);
-						if (_eventQueue.Count <= 1) {
-							resetCounter++;
-							_grotePutCounter = 0;
-							if (resetCounter >= 5 && _thresholdMeterBackup != _thresholdMeter) {
-								_thresholdMeter = _thresholdMeterBackup;
-								resetCounter = 0;
-								setMaxText("");
-							} else if( resetCounter >= 5){
-								_eventQueue.Clear();
-								resetCounter = 0;
-								setMaxText("");
+						lock(_queueLock) {
+							while(_eventQueue.Count == 0) {
+								Monitor.Wait(_queueLock);
 							}
-							Console.WriteLine ("ExecuteThread: wachten op events");
-						} else {
-							
-							Events ev = _eventQueue.Peek ();
-							if (ev.getID () == 1) {
-								listEvents.Add (_eventQueue.Dequeue ());
-								long millis = ev.getMilliseconds ();
-								bool stopWhile = false;
-								while(!stopWhile && _eventQueue.Count > 0) {
-									Events secEv = _eventQueue.Peek ();
-									if (secEv.getMilliseconds () - millis <= 500) {
-										listEvents.Add (_eventQueue.Dequeue ());
-										Console.WriteLine("ExecuteThread: geschreven naar ArrayList");
-									} else {
-										stopWhile = true;
-									} 
-								}
-							}
-							processList (listEvents);
-							resetCounter = 0;
-							listEvents.Clear();
+
+							Events ev = _eventQueue.Dequeue();
+						}
+
+						double magnitude = events.getMagnitude();
+						if(magnitude > 6) {
+							if(prevWasHigh) 
 						}
 					}
 					Console.WriteLine ("Thread gestopt");
