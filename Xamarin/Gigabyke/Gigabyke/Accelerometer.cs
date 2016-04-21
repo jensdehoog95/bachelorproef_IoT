@@ -1,4 +1,4 @@
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Hardware;
 using Android.Locations;
@@ -185,7 +185,7 @@ namespace Gigabyke
 				}
 
 
-				/*
+
 				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
 				FileStream fs = null;
 				if(!File.Exists(path.ToString() + "/magnitudes.txt")) {
@@ -210,7 +210,7 @@ namespace Gigabyke
 				sw1.Flush();
 				sw1.Close();
 
-				*/
+
 				vibrate (100);
 				/*
 				double difference = 0;
@@ -322,7 +322,7 @@ namespace Gigabyke
 				Console.WriteLine (rico);
 				if (rico > threshold) {
 					
-					if (secEv.getMagnitude () >= 13) {
+					if (secEv.getMagnitude () >= 14) {
 						Console.WriteLine ("ANALYZE DATA: Groteputcounter++");
 						_grotePutCounter++;
 					}
@@ -364,10 +364,15 @@ namespace Gigabyke
 				() => {
 					while(!_stopAcc) {
 						if(_lage >= 2 || _sw.ElapsedMilliseconds >= 1250){
-							Console.WriteLine ("ANALYZE DATA: Beëindigen van putmeting");
-							if (_hoge > 20) {
+							Console.WriteLine ("ANALYZE DATA: Beeindigen van putmeting");
+							if (_hoge > 40) {
 								Console.WriteLine ("ANALYZE DATA: KASSEIWEG");
-								setMaxText ("KASSEIWEG");
+								if(_grotePutCounter >= 1) {
+									setMaxText("GROTE PUT");
+									_grotePutCounter = 0;
+								} else {
+									setMaxText ("KASSEIWEG");
+								}
 							} else if (_hoge >= 2) {
 								if (_grotePutCounter >= 1) {
 									Console.WriteLine ("ANALYZE DATA: GROTE PUT");
@@ -385,7 +390,7 @@ namespace Gigabyke
 							_lage = 0;
 							_sw.Restart();
 						}
-						Task.Delay(20);
+						Thread.Sleep(20);
 					}
 					Console.WriteLine ("ExecuteAnalyzeThread: Thread gestopt");
 				}
@@ -433,6 +438,20 @@ namespace Gigabyke
 		public void setMaxText(string tekst) {
 			RunOnUiThread (() => {
 				_max.Text = tekst;
+				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+				FileStream fs = null;
+				if(!File.Exists(path.ToString() + "/putten.txt")) {
+					fs = File.Create(path.ToString() + "/putten.txt");
+				} else {
+					fs = File.Open (path.ToString()+ "/putten.txt",FileMode.Append);
+				}
+				StreamWriter sw = new StreamWriter(fs);
+				sw.Write(Java.Lang.JavaSystem.CurrentTimeMillis ());
+				sw.Write (": ");
+				sw.WriteLine(tekst);
+
+				sw.Flush();
+				sw.Close();
 			});
 		}
 	}
