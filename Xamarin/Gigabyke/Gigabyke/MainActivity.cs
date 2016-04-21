@@ -83,6 +83,8 @@ namespace Gigabyke
 
 			_calibrateButton.Click += (sender, e) => {
 
+				accelerometer.setFactor(0.82339);
+				/*
 				accelerometer.stopAccelerometer();
 
 				// Maak een overgang klaar naar de nieuwe activiteit
@@ -93,9 +95,10 @@ namespace Gigabyke
 
 				// Overschrijf de overgangsanimatie met een nieuwe animatie
 				OverridePendingTransition(Resource.Animation.abc_popup_enter,Resource.Animation.abc_slide_out_bottom);
+				*/
 			};
 
-			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _gpsText, _hasVibrator);
+			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _hasVibrator);
 			gps = new GPS ((LocationManager)GetSystemService (LocationService), _gpsText);
 			initLocationManager ();
 

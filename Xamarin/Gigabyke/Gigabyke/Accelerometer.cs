@@ -125,6 +125,7 @@ namespace Gigabyke
 			if (!_calibrationActive) {
 				_sw.Restart ();
 				executeThread ();
+				executeAnalyzeThread ();
 			}
 			Console.WriteLine ("Accelerometer gestart");
 		}
@@ -176,8 +177,15 @@ namespace Gigabyke
 
 			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
 			if (newG > _thresholdMeter) {
-				events = new Events (1, _elapsed, newG);
-				_eventQueue.Enqueue (events);
+				_sw.Restart ();
+				lock (_queueLock) {
+					events = new Events (1, _elapsed, newG);
+					_eventQueue.Enqueue (events);
+					Monitor.Pulse (_queueLock);
+				}
+
+
+				/*
 				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
 				FileStream fs = null;
 				if(!File.Exists(path.ToString() + "/magnitudes.txt")) {
@@ -201,6 +209,8 @@ namespace Gigabyke
 				sw1.WriteLine(_elapsed);
 				sw1.Flush();
 				sw1.Close();
+
+				*/
 				vibrate (100);
 				/*
 				double difference = 0;
@@ -309,30 +319,24 @@ namespace Gigabyke
 				Events secEv = _eventQueue.Dequeue ();
 				double rico =  System.Math.Abs((_eventQueue.Peek ().getMagnitude() - secEv.getMagnitude())/(_eventQueue.Peek ().getMilliseconds() - secEv.getMilliseconds()));
 				rico = rico * 1000;
+				Console.WriteLine (rico);
 				if (rico > threshold) {
+					
 					if (secEv.getMagnitude () >= 13) {
+						Console.WriteLine ("ANALYZE DATA: Groteputcounter++");
 						_grotePutCounter++;
 					}
 					_lage = 0;
 					_hoge++;
+					Console.Write ("Lage: ");
+					Console.Write (_lage);
+					Console.Write (", hoge: ");
+					Console.WriteLine (_hoge);
 				} else {
+					Console.WriteLine ("ANALYZE DATA: Rico kleiner dan threshold");
 					_lage++;
 				}
-				if(_lage >= 2 || _sw.ElapsedMilliseconds >= 1250){
-					if (_hoge > 40) {
-						setMaxText ("KASSEIWEG");
-					} else if (_hoge >= 2) {
-						if (_grotePutCounter >= 1) {
-							setMaxText ("GROTE PUT");
-						} else {
-							setMaxText ("PUT");
-						}
-					} else {
-						setMaxText ("");
-					}
-					_hoge = 0;
-					_lage = 0;
-				}
+
 			}
 		}
 
@@ -352,6 +356,40 @@ namespace Gigabyke
 				}
 			)).Start ();
 			Console.WriteLine ("Thread gestart");
+		}
+
+		public void executeAnalyzeThread() {
+			Console.WriteLine ("ExecuteAnalyzeThread: Thread starten");
+			new System.Threading.Thread (new System.Threading.ThreadStart (
+				() => {
+					while(!_stopAcc) {
+						if(_lage >= 2 || _sw.ElapsedMilliseconds >= 1250){
+							Console.WriteLine ("ANALYZE DATA: Beëindigen van putmeting");
+							if (_hoge > 20) {
+								Console.WriteLine ("ANALYZE DATA: KASSEIWEG");
+								setMaxText ("KASSEIWEG");
+							} else if (_hoge >= 2) {
+								if (_grotePutCounter >= 1) {
+									Console.WriteLine ("ANALYZE DATA: GROTE PUT");
+									_grotePutCounter = 0;
+									setMaxText ("GROTE PUT");
+								} else {
+									Console.WriteLine ("ANALYZE DATA: PUT");
+									setMaxText ("PUT");
+								}
+							} else {
+								Console.WriteLine ("ANALYZE DATA: '' ''");
+								setMaxText ("");
+							}
+							_hoge = 0;
+							_lage = 0;
+							_sw.Restart();
+						}
+						Task.Delay(20);
+					}
+					Console.WriteLine ("ExecuteAnalyzeThread: Thread gestopt");
+				}
+			)).Start ();
 		}
 
 		public int processList(ArrayList list) {
