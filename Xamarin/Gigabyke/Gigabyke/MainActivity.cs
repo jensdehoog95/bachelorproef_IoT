@@ -95,7 +95,7 @@ namespace Gigabyke
 				OverridePendingTransition(Resource.Animation.abc_popup_enter,Resource.Animation.abc_slide_out_bottom);
 			};
 
-			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _hasVibrator);
+			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _gpsText, _hasVibrator);
 			gps = new GPS ((LocationManager)GetSystemService (LocationService), _gpsText);
 			initLocationManager ();
 

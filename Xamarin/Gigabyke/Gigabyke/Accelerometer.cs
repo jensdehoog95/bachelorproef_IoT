@@ -27,6 +27,7 @@ namespace Gigabyke
 		private TextView _accValues;
 		private TextView _gforceView;
 		private TextView _max;
+		private TextView _location;
 		private Queue<Events> _eventQueue = new Queue<Events>();
 
 		private double _thresholdMeter;
@@ -44,7 +45,7 @@ namespace Gigabyke
 		private Stopwatch _putWatch;
 		private Events events;
 
-		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
+		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, TextView location, bool hasVibrator)
 		{
 			this._sensorManager = manager;
 			this._accValues = values;
@@ -52,6 +53,7 @@ namespace Gigabyke
 			this._thresholdMeter = 1;
 			this._thresholdMeterBackup = 1;
 			this._max = max;
+			this._location = location;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
 			this._sw = new Stopwatch();
@@ -174,8 +176,121 @@ namespace Gigabyke
 			if (newG > 3) {
 				events = new Events (1, _elapsed, newG);
 				_eventQueue.Enqueue (events);
-				vibrate (50);
-				_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);
+				var path =  global::Android.OS.Environment.RootDirectory.AbsolutePath;
+
+				FileStream fs = null;
+				if(!File.Exists(path.ToString() + "/magnitudes.txt")) {
+					fs = File.Create(path.ToString() + "/magnitudes.txt");
+				} else {
+					fs = File.Open (path.ToString()+ "/magnitudes.txt",FileMode.Append);
+				}
+				StreamWriter sw = new StreamWriter(fs);
+				sw.WriteLine(newG);
+				sw.Flush();
+				sw.Close();
+
+				FileStream fs1 = null;
+				if(!File.Exists(path.ToString() + "/time.txt")) {
+					fs1 = File.Create(path.ToString() + "/time.txt");
+
+				} else {
+					fs1 = File.Open (path.ToString()+ "/time.txt",FileMode.Append);
+				}
+				StreamWriter sw1 = new StreamWriter(fs1);
+				sw1.WriteLine(_elapsed);
+				sw1.Flush();
+				sw1.Close();
+
+				FileStream fs2 = null;
+				if(!File.Exists(path.ToString() + "/gps.txt")) {
+					fs2 = File.Create(path.ToString() + "/gps.txt");
+
+				} else {
+					fs2 = File.Open (path.ToString()+ "/gps.txt",FileMode.Append);
+				}
+				StreamWriter sw2 = new StreamWriter(fs1);
+				sw1.WriteLine(_location.Text);
+				sw1.Flush();
+				sw1.Close();
+				vibrate (100);
+				/*
+				double difference = 0;
+				int oneTime = 0;
+				double initialValue = 0;
+				foreach (Events ev in _eventQueue) 
+				{
+					if (oneTime == 0) {
+						oneTime++;
+						initialValue = ev.getMilliseconds();
+					}
+					double time = ev.getMilliseconds();
+					difference = time - initialValue;
+					_counter++;
+					if (difference >= 1250) {
+						String maxText = "";
+						if (_counter >= 2 && _counter <= 4) {
+							maxText = "PUT!";
+						} else if (_counter > 4) {
+							maxText = "KASSEIWEG!";
+						}
+						oneTime = 0;
+						_counter = 0;
+						_max.Text = maxText;
+					}
+					if (_counter >= 5 && _counter <= 8) {
+						if (difference <= 650) {
+							_max.Text = "GROTE PUT!";
+							oneTime = 0;
+							_counter = 0;
+						}
+					}
+
+				}
+					
+				//Als de newG groter is dan de threshold, dan verhogen we de counter en starten we de putWatch
+				_counter++;
+				_putWatch.Start ();
+				vibrate (100);
+
+			} else {
+				if (_elapsed >= 1250) {
+					//Check of de verstreken tijd gelijk of groter is dan 1,25s
+					String maxText;
+					if (_counter >= 2 && _counter <= 4) {
+						//Bij een lage counter hebben we te maken met een gewone put
+						maxText = "PUT!";
+					} else if (_counter > 4) {
+						//Bij een hoge counter hebben we te maken met een kasseiweg
+						//We verlagen daarom onze threshold naar 3 om goed te kunnen detecteren
+						maxText = _counter.ToString ();
+						tempTreshold = _thresholdMeter;
+						_thresholdMeter = 3;
+					} else {
+						//Een counter van 1 of een andere onverwachte waarde negeren we
+						maxText = "";
+						_thresholdMeter = tempTreshold;
+						_grotePutCounter = 0;
+					}
+					_max.Text = maxText;
+					restartMeasurement ();
+				} 
+
+				if (_counter >= 5 && _counter <= 8) {
+					if (_putWatch.ElapsedMilliseconds <= 650) {
+						//Bij een grote counter op korte tijd hebben we te maken met een grote put
+						if (_grotePutCounter >= 1) {
+							//Er mag maar 1 grote put op de korte tijd gedetecteerd worden. Alle anderen worden genegeerd
+							_max.Text = _counter.ToString ();
+						} else {
+							//Verhoog de grotePutCounter en voer restartMeasurement uit
+							_max.Text = "GROTE PUT!";
+							//Task.Delay (500);
+							_grotePutCounter++;
+							restartMeasurement ();
+						}
+					}
+				} */
+				_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);//.Transparent);
 			} else {
 				_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
 			}
@@ -201,20 +316,43 @@ namespace Gigabyke
 			new System.Threading.Thread (new System.Threading.ThreadStart (
 				() => {
 					ArrayList listEvents = new ArrayList ();
-					int resetCounter = 0; bool prevWasHigh = false;
+					int resetCounter = 0;
 					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
 					while (!_stopAcc) {
-						lock(_queueLock) {
-							while(_eventQueue.Count == 0) {
-								Monitor.Wait(_queueLock);
+						Java.Lang.Thread.Sleep(1000);
+						if (_eventQueue.Count <= 1) {
+							resetCounter++;
+							_grotePutCounter = 0;
+							if (resetCounter >= 5 && _thresholdMeterBackup != _thresholdMeter) {
+								_thresholdMeter = _thresholdMeterBackup;
+								resetCounter = 0;
+								setMaxText("");
+							} else if( resetCounter >= 5){
+								_eventQueue.Clear();
+								resetCounter = 0;
+								setMaxText("");
 							}
+							Console.WriteLine ("ExecuteThread: wachten op events");
+						} else {
 
-							Events ev = _eventQueue.Dequeue();
-						}
-
-						double magnitude = events.getMagnitude();
-						if(magnitude > 6) {
-							if(prevWasHigh) 
+							Events ev = _eventQueue.Peek ();
+							if (ev.getID () == 1) {
+								listEvents.Add (_eventQueue.Dequeue ());
+								long millis = ev.getMilliseconds ();
+								bool stopWhile = false;
+								while(!stopWhile && _eventQueue.Count > 0) {
+									Events secEv = _eventQueue.Peek ();
+									if (secEv.getMilliseconds () - millis <= 500) {
+										listEvents.Add (_eventQueue.Dequeue ());
+										Console.WriteLine("ExecuteThread: geschreven naar ArrayList");
+									} else {
+										stopWhile = true;
+									} 
+								}
+							}
+							processList (listEvents);
+							resetCounter = 0;
+							listEvents.Clear();
 						}
 					}
 					Console.WriteLine ("Thread gestopt");
