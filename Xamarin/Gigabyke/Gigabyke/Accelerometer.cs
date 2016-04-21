@@ -22,12 +22,11 @@ namespace Gigabyke
 	public class Accelerometer : Activity, Java.IO.ISerializable, ISensorEventListener
 	{
 		private static readonly object _syncLock = new object();
-		private static readonly object _queueLock = new object ();
+		private static readonly object _queueLock = new object();
 		private SensorManager _sensorManager;
 		private TextView _accValues;
 		private TextView _gforceView;
 		private TextView _max;
-		private TextView _location;
 		private Queue<Events> _eventQueue = new Queue<Events>();
 
 		private double _thresholdMeter;
@@ -44,8 +43,10 @@ namespace Gigabyke
 		private Stopwatch _sw;
 		private Stopwatch _putWatch;
 		private Events events;
+		private int _lage;
+		private int _hoge;
 
-		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, TextView location, bool hasVibrator)
+		public Accelerometer (SensorManager manager, TextView values, TextView gforce, TextView max, bool hasVibrator)
 		{
 			this._sensorManager = manager;
 			this._accValues = values;
@@ -53,13 +54,14 @@ namespace Gigabyke
 			this._thresholdMeter = 1;
 			this._thresholdMeterBackup = 1;
 			this._max = max;
-			this._location = location;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
 			this._sw = new Stopwatch();
 			this._counter = 0;
 			this._elapsed = 0;
 			this._putWatch = new Stopwatch ();
+			_lage = 0;
+			_hoge = 0;
 		}
 
 		public Accelerometer (SensorManager manager, bool hasVibrator)
@@ -173,11 +175,10 @@ namespace Gigabyke
 			_gforceView.Text = string.Format ("G Force: {0:f}", newG);
 
 			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
-			if (newG > 3) {
+			if (newG > _thresholdMeter) {
 				events = new Events (1, _elapsed, newG);
 				_eventQueue.Enqueue (events);
-				var path =  global::Android.OS.Environment.RootDirectory.AbsolutePath;
-
+				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
 				FileStream fs = null;
 				if(!File.Exists(path.ToString() + "/magnitudes.txt")) {
 					fs = File.Create(path.ToString() + "/magnitudes.txt");
@@ -198,18 +199,6 @@ namespace Gigabyke
 				}
 				StreamWriter sw1 = new StreamWriter(fs1);
 				sw1.WriteLine(_elapsed);
-				sw1.Flush();
-				sw1.Close();
-
-				FileStream fs2 = null;
-				if(!File.Exists(path.ToString() + "/gps.txt")) {
-					fs2 = File.Create(path.ToString() + "/gps.txt");
-
-				} else {
-					fs2 = File.Open (path.ToString()+ "/gps.txt",FileMode.Append);
-				}
-				StreamWriter sw2 = new StreamWriter(fs1);
-				sw1.WriteLine(_location.Text);
 				sw1.Flush();
 				sw1.Close();
 				vibrate (100);
@@ -311,51 +300,55 @@ namespace Gigabyke
 			_counter = 0;
 		}
 
+		public void analyseData(){
+			int threshold = 1;
+
+			if (_eventQueue.Count <= 1) {
+
+			} else {
+				Events secEv = _eventQueue.Dequeue ();
+				double rico =  System.Math.Abs((_eventQueue.Peek ().getMagnitude() - secEv.getMagnitude())/(_eventQueue.Peek ().getMilliseconds() - secEv.getMilliseconds()));
+				rico = rico * 1000;
+				if (rico > threshold) {
+					if (secEv.getMagnitude () >= 13) {
+						_grotePutCounter++;
+					}
+					_lage = 0;
+					_hoge++;
+				} else {
+					_lage++;
+				}
+				if(_lage >= 2 || _sw.ElapsedMilliseconds >= 1250){
+					if (_hoge > 40) {
+						setMaxText ("KASSEIWEG");
+					} else if (_hoge >= 2) {
+						if (_grotePutCounter >= 1) {
+							setMaxText ("GROTE PUT");
+						} else {
+							setMaxText ("PUT");
+						}
+					} else {
+						setMaxText ("");
+					}
+					_hoge = 0;
+					_lage = 0;
+				}
+			}
+		}
+
 		public void executeThread() {
 			Console.WriteLine ("ExecuteThread: Thread starten");
 			new System.Threading.Thread (new System.Threading.ThreadStart (
 				() => {
-					ArrayList listEvents = new ArrayList ();
-					int resetCounter = 0;
-					Console.WriteLine ("ExecuteThread: ArrayList aangemaakt");
-					while (!_stopAcc) {
-						Java.Lang.Thread.Sleep(1000);
-						if (_eventQueue.Count <= 1) {
-							resetCounter++;
-							_grotePutCounter = 0;
-							if (resetCounter >= 5 && _thresholdMeterBackup != _thresholdMeter) {
-								_thresholdMeter = _thresholdMeterBackup;
-								resetCounter = 0;
-								setMaxText("");
-							} else if( resetCounter >= 5){
-								_eventQueue.Clear();
-								resetCounter = 0;
-								setMaxText("");
+					while(!_stopAcc){
+						lock(_queueLock){
+							while(_eventQueue.Count <= 1){
+								Monitor.Wait(_queueLock);
 							}
-							Console.WriteLine ("ExecuteThread: wachten op events");
-						} else {
-
-							Events ev = _eventQueue.Peek ();
-							if (ev.getID () == 1) {
-								listEvents.Add (_eventQueue.Dequeue ());
-								long millis = ev.getMilliseconds ();
-								bool stopWhile = false;
-								while(!stopWhile && _eventQueue.Count > 0) {
-									Events secEv = _eventQueue.Peek ();
-									if (secEv.getMilliseconds () - millis <= 500) {
-										listEvents.Add (_eventQueue.Dequeue ());
-										Console.WriteLine("ExecuteThread: geschreven naar ArrayList");
-									} else {
-										stopWhile = true;
-									} 
-								}
-							}
-							processList (listEvents);
-							resetCounter = 0;
-							listEvents.Clear();
 						}
+						analyseData();
 					}
-					Console.WriteLine ("Thread gestopt");
+
 				}
 			)).Start ();
 			Console.WriteLine ("Thread gestart");
