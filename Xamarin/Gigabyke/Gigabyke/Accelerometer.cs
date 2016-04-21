@@ -322,7 +322,7 @@ namespace Gigabyke
 				Console.WriteLine (rico);
 				if (rico > threshold) {
 					
-					if (secEv.getMagnitude () >= 13) {
+					if (secEv.getMagnitude () >= 14) {
 						Console.WriteLine ("ANALYZE DATA: Groteputcounter++");
 						_grotePutCounter++;
 					}
@@ -367,7 +367,12 @@ namespace Gigabyke
 							Console.WriteLine ("ANALYZE DATA: Beëindigen van putmeting");
 							if (_hoge > 20) {
 								Console.WriteLine ("ANALYZE DATA: KASSEIWEG");
-								setMaxText ("KASSEIWEG");
+								if(_grotePutCounter >= 1) {
+									setMaxText("GROTE PUT");
+									_grotePutCounter = 0;
+								} else {
+									setMaxText ("KASSEIWEG");
+								}
 							} else if (_hoge >= 2) {
 								if (_grotePutCounter >= 1) {
 									Console.WriteLine ("ANALYZE DATA: GROTE PUT");
@@ -385,7 +390,7 @@ namespace Gigabyke
 							_lage = 0;
 							_sw.Restart();
 						}
-						Task.Delay(20);
+						Thread.Sleep(20);
 					}
 					Console.WriteLine ("ExecuteAnalyzeThread: Thread gestopt");
 				}
