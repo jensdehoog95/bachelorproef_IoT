@@ -23,11 +23,14 @@ namespace Gigabyke
 		LocationManager _locationManager;
 		string _locationProvider;
 
-		public GPS (LocationManager locationManager, TextView locationText)
+		private bool _writeAccess;
+
+		public GPS (LocationManager locationManager, TextView locationText, bool writeAccess)
 		{
 			this._locationText = locationText;
 			this._locationText.Text = "Initialiseren";
 			this._locationManager = locationManager;
+			this._writeAccess = writeAccess;
 		}
 
 		/*
@@ -47,19 +50,21 @@ namespace Gigabyke
 				_locationText.Text = locText;
 
 				//Write the coordinates to a file.
-				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
-				FileStream fs = null;
-				if(!File.Exists(path.ToString() + "/gps.txt")) {					
-					fs = File.Create(path.ToString() + "/gps.txt");
-				} else {
-					fs = File.Open (path.ToString()+ "/gps.txt",FileMode.Append);
+				if (_writeAccess) {
+					var path = global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+					FileStream fs = null;
+					if (!File.Exists (path.ToString () + "/gps.txt")) {					
+						fs = File.Create (path.ToString () + "/gps.txt");
+					} else {
+						fs = File.Open (path.ToString () + "/gps.txt", FileMode.Append);
+					}
+					StreamWriter sw = new StreamWriter (fs);
+					sw.Write (Java.Lang.JavaSystem.CurrentTimeMillis ());
+					sw.Write (": ");
+					sw.WriteLine (locText);
+					sw.Flush ();
+					sw.Close ();
 				}
-				StreamWriter sw = new StreamWriter(fs);
-				sw.Write(Java.Lang.JavaSystem.CurrentTimeMillis ());
-				sw.Write (": ");
-				sw.WriteLine(locText);
-				sw.Flush();
-				sw.Close();
 			}
 		}
 

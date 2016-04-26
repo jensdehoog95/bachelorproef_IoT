@@ -18,6 +18,7 @@ namespace Gigabyke
 	{
 		const int stepSeekBar = 5;
 		bool _hasVibrator;
+		bool _writeAccess = false;
 
 		TextView _accValues;
 		TextView _accText;
@@ -102,8 +103,8 @@ namespace Gigabyke
 				OverridePendingTransition(Resource.Animation.abc_popup_enter,Resource.Animation.abc_slide_out_bottom);
 			};
 
-			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _hasVibrator);
-			gps = new GPS ((LocationManager)GetSystemService (LocationService), _gpsText);
+			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _hasVibrator, _writeAccess);
+			gps = new GPS ((LocationManager)GetSystemService (LocationService), _gpsText, _writeAccess);
 			initLocationManager ();
 
 		}

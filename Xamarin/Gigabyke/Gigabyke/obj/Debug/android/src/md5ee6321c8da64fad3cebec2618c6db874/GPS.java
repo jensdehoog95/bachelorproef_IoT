@@ -26,11 +26,11 @@ public class GPS
 			mono.android.TypeManager.Activate ("Gigabyke.GPS, Gigabyke, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "", this, new java.lang.Object[] {  });
 	}
 
-	public GPS (android.location.LocationManager p0, android.widget.TextView p1) throws java.lang.Throwable
+	public GPS (android.location.LocationManager p0, android.widget.TextView p1, boolean p2) throws java.lang.Throwable
 	{
 		super ();
 		if (getClass () == GPS.class)
-			mono.android.TypeManager.Activate ("Gigabyke.GPS, Gigabyke, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "Android.Locations.LocationManager, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=84e04ff9cfb79065:Android.Widget.TextView, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=84e04ff9cfb79065", this, new java.lang.Object[] { p0, p1 });
+			mono.android.TypeManager.Activate ("Gigabyke.GPS, Gigabyke, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "Android.Locations.LocationManager, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=84e04ff9cfb79065:Android.Widget.TextView, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=84e04ff9cfb79065:System.Boolean, mscorlib, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e", this, new java.lang.Object[] { p0, p1, p2 });
 	}
 
 
