@@ -177,14 +177,15 @@ namespace Gigabyke
 
 			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
 			if (newG > _thresholdMeter) {
-				_sw.Restart ();
+				
+				Console.WriteLine ("STOPWATCH: Restart");
 				lock (_queueLock) {
 					events = new Events (1, _elapsed, newG);
 					_eventQueue.Enqueue (events);
 					Monitor.Pulse (_queueLock);
 				}
 
-
+				/*
 
 				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
 				FileStream fs = null;
@@ -210,7 +211,7 @@ namespace Gigabyke
 				sw1.Flush();
 				sw1.Close();
 
-
+				*/
 				vibrate (100);
 				/*
 				double difference = 0;
@@ -320,7 +321,7 @@ namespace Gigabyke
 				double rico =  System.Math.Abs((_eventQueue.Peek ().getMagnitude() - secEv.getMagnitude())/(_eventQueue.Peek ().getMilliseconds() - secEv.getMilliseconds()));
 				rico = rico * 1000;
 				Console.WriteLine (rico);
-				if (rico > threshold) {
+				if (rico > threshold || _sw.ElapsedMilliseconds > 3000) {
 					
 					if (secEv.getMagnitude () >= 14) {
 						Console.WriteLine ("ANALYZE DATA: Groteputcounter++");
@@ -334,8 +335,11 @@ namespace Gigabyke
 					Console.WriteLine (_hoge);
 				} else {
 					Console.WriteLine ("ANALYZE DATA: Rico kleiner dan threshold");
+					Console.Write ("STOPWATCH: ");
+					Console.WriteLine (_sw.ElapsedMilliseconds.ToString());
 					_lage++;
 				}
+				_sw.Restart ();
 
 			}
 		}
@@ -362,18 +366,18 @@ namespace Gigabyke
 			Console.WriteLine ("ExecuteAnalyzeThread: Thread starten");
 			new System.Threading.Thread (new System.Threading.ThreadStart (
 				() => {
+					Stopwatch threadWatch = new Stopwatch();
+					threadWatch.Restart();
 					while(!_stopAcc) {
-						if(_lage >= 2 || _sw.ElapsedMilliseconds >= 1250){
+						if(_lage >= 2 || threadWatch.ElapsedMilliseconds >= 1250){
 							Console.WriteLine ("ANALYZE DATA: Beeindigen van putmeting");
-							if (_hoge > 40) {
+							if (_hoge >= 20) {
 								Console.WriteLine ("ANALYZE DATA: KASSEIWEG");
-								if(_grotePutCounter >= 1) {
-									setMaxText("GROTE PUT");
-									_grotePutCounter = 0;
-								} else {
-									setMaxText ("KASSEIWEG");
-								}
-							} else if (_hoge >= 2) {
+								setMaxText ("KASSEIWEG");
+							} else if(_grotePutCounter >= 1) {
+								setMaxText("GROTE PUT");
+								_grotePutCounter = 0;
+							} else if (_hoge >= 1) {
 								if (_grotePutCounter >= 1) {
 									Console.WriteLine ("ANALYZE DATA: GROTE PUT");
 									_grotePutCounter = 0;
@@ -388,8 +392,9 @@ namespace Gigabyke
 							}
 							_hoge = 0;
 							_lage = 0;
-							_sw.Restart();
+							threadWatch.Restart();
 						}
+
 						Thread.Sleep(20);
 					}
 					Console.WriteLine ("ExecuteAnalyzeThread: Thread gestopt");
@@ -438,6 +443,8 @@ namespace Gigabyke
 		public void setMaxText(string tekst) {
 			RunOnUiThread (() => {
 				_max.Text = tekst;
+
+				/*
 				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
 				FileStream fs = null;
 				if(!File.Exists(path.ToString() + "/putten.txt")) {
@@ -449,9 +456,10 @@ namespace Gigabyke
 				sw.Write(Java.Lang.JavaSystem.CurrentTimeMillis ());
 				sw.Write (": ");
 				sw.WriteLine(tekst);
-
 				sw.Flush();
 				sw.Close();
+
+*/
 			});
 		}
 	}
