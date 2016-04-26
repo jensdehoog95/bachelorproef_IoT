@@ -37,11 +37,12 @@ namespace Gigabyke
 		private bool _hasVibrator = false;
 		private int _grotePutCounter = 0;
 		private bool _stopAcc = false;
+		private bool _writeAccess = false;
 
 		private int _counter;
 		private long _elapsed;
 		private Stopwatch _sw;
-		private Stopwatch _putWatch;
+		private Stopwatch _threadWatch;
 		private Events events;
 		private int _lage;
 		private int _hoge;
@@ -59,7 +60,7 @@ namespace Gigabyke
 			this._sw = new Stopwatch();
 			this._counter = 0;
 			this._elapsed = 0;
-			this._putWatch = new Stopwatch ();
+			this._threadWatch = new Stopwatch ();
 			_lage = 0;
 			_hoge = 0;
 		}
@@ -177,7 +178,9 @@ namespace Gigabyke
 
 			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
 			if (newG > _thresholdMeter) {
-				
+
+				_threadWatch.Restart ();
+
 				Console.WriteLine ("STOPWATCH: Restart");
 				lock (_queueLock) {
 					events = new Events (1, _elapsed, newG);
@@ -185,111 +188,34 @@ namespace Gigabyke
 					Monitor.Pulse (_queueLock);
 				}
 
-				/*
-
-				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
-				FileStream fs = null;
-				if(!File.Exists(path.ToString() + "/magnitudes.txt")) {
-					fs = File.Create(path.ToString() + "/magnitudes.txt");
-				} else {
-					fs = File.Open (path.ToString()+ "/magnitudes.txt",FileMode.Append);
-				}
-				StreamWriter sw = new StreamWriter(fs);
-				sw.WriteLine(newG);
-				sw.Flush();
-				sw.Close();
-
-				FileStream fs1 = null;
-				if(!File.Exists(path.ToString() + "/time.txt")) {
-					fs1 = File.Create(path.ToString() + "/time.txt");
-
-				} else {
-					fs1 = File.Open (path.ToString()+ "/time.txt",FileMode.Append);
-				}
-				StreamWriter sw1 = new StreamWriter(fs1);
-				sw1.WriteLine(_elapsed);
-				sw1.Flush();
-				sw1.Close();
-
-				*/
-				vibrate (100);
-				/*
-				double difference = 0;
-				int oneTime = 0;
-				double initialValue = 0;
-				foreach (Events ev in _eventQueue) 
-				{
-					if (oneTime == 0) {
-						oneTime++;
-						initialValue = ev.getMilliseconds();
-					}
-					double time = ev.getMilliseconds();
-					difference = time - initialValue;
-					_counter++;
-					if (difference >= 1250) {
-						String maxText = "";
-						if (_counter >= 2 && _counter <= 4) {
-							maxText = "PUT!";
-						} else if (_counter > 4) {
-							maxText = "KASSEIWEG!";
-						}
-						oneTime = 0;
-						_counter = 0;
-						_max.Text = maxText;
-					}
-					if (_counter >= 5 && _counter <= 8) {
-						if (difference <= 650) {
-							_max.Text = "GROTE PUT!";
-							oneTime = 0;
-							_counter = 0;
-						}
-					}
-
-				}
-					
-				//Als de newG groter is dan de threshold, dan verhogen we de counter en starten we de putWatch
-				_counter++;
-				_putWatch.Start ();
-				vibrate (100);
-
-			} else {
-				if (_elapsed >= 1250) {
-					//Check of de verstreken tijd gelijk of groter is dan 1,25s
-					String maxText;
-					if (_counter >= 2 && _counter <= 4) {
-						//Bij een lage counter hebben we te maken met een gewone put
-						maxText = "PUT!";
-					} else if (_counter > 4) {
-						//Bij een hoge counter hebben we te maken met een kasseiweg
-						//We verlagen daarom onze threshold naar 3 om goed te kunnen detecteren
-						maxText = _counter.ToString ();
-						tempTreshold = _thresholdMeter;
-						_thresholdMeter = 3;
+				if (_writeAccess) {
+					var path = global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+					FileStream fs = null;
+					if (!File.Exists (path.ToString () + "/magnitudes.txt")) {
+						fs = File.Create (path.ToString () + "/magnitudes.txt");
 					} else {
-						//Een counter van 1 of een andere onverwachte waarde negeren we
-						maxText = "";
-						_thresholdMeter = tempTreshold;
-						_grotePutCounter = 0;
+						fs = File.Open (path.ToString () + "/magnitudes.txt", FileMode.Append);
 					}
-					_max.Text = maxText;
-					restartMeasurement ();
-				} 
+					StreamWriter sw = new StreamWriter (fs);
+					sw.WriteLine (newG);
+					sw.Flush ();
+					sw.Close ();
 
-				if (_counter >= 5 && _counter <= 8) {
-					if (_putWatch.ElapsedMilliseconds <= 650) {
-						//Bij een grote counter op korte tijd hebben we te maken met een grote put
-						if (_grotePutCounter >= 1) {
-							//Er mag maar 1 grote put op de korte tijd gedetecteerd worden. Alle anderen worden genegeerd
-							_max.Text = _counter.ToString ();
-						} else {
-							//Verhoog de grotePutCounter en voer restartMeasurement uit
-							_max.Text = "GROTE PUT!";
-							//Task.Delay (500);
-							_grotePutCounter++;
-							restartMeasurement ();
-						}
+					FileStream fs1 = null;
+					if (!File.Exists (path.ToString () + "/time.txt")) {
+						fs1 = File.Create (path.ToString () + "/time.txt");
+
+					} else {
+						fs1 = File.Open (path.ToString () + "/time.txt", FileMode.Append);
 					}
-				} */
+					StreamWriter sw1 = new StreamWriter (fs1);
+					sw1.WriteLine (_elapsed);
+					sw1.Flush ();
+					sw1.Close ();
+
+				}
+				vibrate (100);
+
 				_gforceView.SetBackgroundColor (Android.Graphics.Color.Red);//.Transparent);
 			} else {
 				_gforceView.SetBackgroundColor (Android.Graphics.Color.Transparent);
@@ -300,15 +226,6 @@ namespace Gigabyke
 		public void vibrate(int duration) {
 			if(_hasVibrator)
 				CrossVibrate.Current.Vibration (duration);
-		}
-
-		/*
-		 * Reset voor de stopwatches en zet de counter terug op 0 
-		 */
-		public void restartMeasurement() {
-			_putWatch.Reset ();
-			_sw.Restart ();
-			_counter = 0;
 		}
 
 		public void analyseData(){
@@ -366,10 +283,9 @@ namespace Gigabyke
 			Console.WriteLine ("ExecuteAnalyzeThread: Thread starten");
 			new System.Threading.Thread (new System.Threading.ThreadStart (
 				() => {
-					Stopwatch threadWatch = new Stopwatch();
-					threadWatch.Restart();
+					_threadWatch.Restart();
 					while(!_stopAcc) {
-						if(_lage >= 2 || threadWatch.ElapsedMilliseconds >= 1250){
+						if(_lage >= 2 || _threadWatch.ElapsedMilliseconds >= 1250){
 							Console.WriteLine ("ANALYZE DATA: Beeindigen van putmeting");
 							if (_hoge >= 20) {
 								Console.WriteLine ("ANALYZE DATA: KASSEIWEG");
@@ -377,7 +293,7 @@ namespace Gigabyke
 							} else if(_grotePutCounter >= 1) {
 								setMaxText("GROTE PUT");
 								_grotePutCounter = 0;
-							} else if (_hoge >= 1) {
+							} else if (_hoge >= 2) {
 								if (_grotePutCounter >= 1) {
 									Console.WriteLine ("ANALYZE DATA: GROTE PUT");
 									_grotePutCounter = 0;
@@ -392,7 +308,7 @@ namespace Gigabyke
 							}
 							_hoge = 0;
 							_lage = 0;
-							threadWatch.Restart();
+							_threadWatch.Restart();
 						}
 
 						Thread.Sleep(20);
@@ -402,64 +318,26 @@ namespace Gigabyke
 			)).Start ();
 		}
 
-		public int processList(ArrayList list) {
-			Events firstEvent = (Events) list [0];
-			Events lastEvent = (Events) list [list.Count - 1];
-
-			if(list.Count == 1) {
-				// Gewoon negeren
-				setMaxText ("");
-				return 1;
-
-			} else if (list.Count >= 2 && list.Count <= 4) {
-				if (_grotePutCounter <= 2) {	
-					_grotePutCounter++;
-					setMaxText ("PUT!");
-					return 2;
-				} else {
-					setMaxText("KASSEIWEG");
-					Console.WriteLine ("Threshold op 3 gezet");
-					_thresholdMeter = 3;
-					return 4;
-				}
-			} else if (list.Count >= 5 && list.Count <= 8) {
-				if (_grotePutCounter == 0) {
-					_grotePutCounter++;
-					setMaxText("GROTE PUT!");
-					return 3;
-				} else {
-					setMaxText("KASSEIWEG");
-					_thresholdMeter = 3;
-					return 4;
-				}
-			} else {
-				setMaxText("KASSEIWEG");
-				Console.WriteLine ("Threshold op 3 gezet");
-				_thresholdMeter = 3;
-				return 4;
-			}
-		}
-
 		public void setMaxText(string tekst) {
 			RunOnUiThread (() => {
 				_max.Text = tekst;
 
-				/*
-				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
-				FileStream fs = null;
-				if(!File.Exists(path.ToString() + "/putten.txt")) {
-					fs = File.Create(path.ToString() + "/putten.txt");
-				} else {
-					fs = File.Open (path.ToString()+ "/putten.txt",FileMode.Append);
+				if(_writeAccess) {
+					var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+					FileStream fs = null;
+					if(!File.Exists(path.ToString() + "/putten.txt")) {
+						fs = File.Create(path.ToString() + "/putten.txt");
+					} else {
+						fs = File.Open (path.ToString()+ "/putten.txt",FileMode.Append);
+					}
+					StreamWriter sw = new StreamWriter(fs);
+					sw.Write(Java.Lang.JavaSystem.CurrentTimeMillis ());
+					sw.Write (": ");
+					sw.WriteLine(tekst);
+					sw.Flush();
+					sw.Close();
 				}
-				StreamWriter sw = new StreamWriter(fs);
-				sw.Write(Java.Lang.JavaSystem.CurrentTimeMillis ());
-				sw.Write (": ");
-				sw.WriteLine(tekst);
-				sw.Flush();
-				sw.Close();
 
-*/
 			});
 		}
 	}
