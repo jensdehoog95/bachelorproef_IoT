@@ -25,7 +25,6 @@ namespace Gigabyke
 		Accelerometer meter;
 		TextView infoLabel;
 		Button calibrateButton;
-		Button finishButton;
 		double calibrateMax;
 		double factor;
 		bool _complete = false;
@@ -48,37 +47,37 @@ namespace Gigabyke
 			"Klik op de knop om te starten";
 
 			calibrateButton.Click += (sender, e) => {
-				// Check of de kalibratie al voltooid is
-				// Zo ja: beëindig activiteit
-				// Zo nee: start kalibratie
+				// Check if the calibration is finished.
+				// if yes: terminate the calibration.
+				// if no: start the calibration.
 				if(!_complete) {
 					infoLabel.Text = "Aan het meten...";
 
-					// Start nieuwe thread
-					// Gaat accelerometer starten, kalibreren en dan terug stopzetten
+					// Start a new thread
+					// Starts the accelerometer, kalibrates and then stops the accelerometer.
 					Task.Factory.StartNew(
 						() => {
 							meter.startAccelerometer();
 							calibrateMax = meter.calibrate();
 							meter.stopAccelerometer();
 						}
-					// Nadat thread beëindigd is, voer deze taken uit
+					// After thread is terminated, do these tasks.
 					).ContinueWith (
 						t => {
-							// Bereken factor
-							factor = 20 / (calibrateMax - 9.81);
+							//Calculate the factor
+							factor = 0.21854;//20 / (calibrateMax - 9.81);
 							infoLabel.Text = string.Format("{0:f5}",factor);
 
-							// Zet de kalibratieknop om naar een finishknop
+							// Converr the calibrationbutton to a finishbuttor.
 							calibrateButton.Text = "Beëindig";
 
-							// Nu is de kalibratie voltooid, de knop krijgt een andere functie
+							// Now the calibration is done, the button gets another function.
 							_complete = true;
 						}, TaskScheduler.FromCurrentSynchronizationContext()
-						// TaskScheduler... zorgt ervoor dat de taken na de uitgevoerde thread op de main thread worden uitgevoerd
+						// TaskScheduler... makes sure that the tasks after the executed thread will be executed in the main thread.
 					);
 				} else {
-					// Maak een nieuwe overgang klaar naar de vorige activiteit
+					// Make a new transition ready to the previous activity.
 					Intent resultData = new Intent();
 					resultData.PutExtra("CalibrationFactor",factor);
 					SetResult(Result.Ok,resultData);
