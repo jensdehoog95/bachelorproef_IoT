@@ -37,7 +37,7 @@ namespace Gigabyke
 		private bool _hasVibrator = false;
 		private int _grotePutCounter = 0;
 		private bool _stopAcc = false;
-		private bool _writeAccess = false;
+		private bool _writeAccess = true;
 
 		private int _counter;
 		private long _elapsed;

@@ -83,7 +83,8 @@ namespace Gigabyke
 
 			_calibrateButton.Click += (sender, e) => {
 
-				accelerometer.setFactor(0.82913);
+				//accelerometer.setFactor(0.82913);
+				accelerometer.setFactor(0.2189);
 				/*
 				accelerometer.stopAccelerometer();
 
