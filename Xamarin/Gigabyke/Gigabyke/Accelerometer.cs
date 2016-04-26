@@ -21,8 +21,8 @@ namespace Gigabyke
 {
 	public class Accelerometer : Activity, Java.IO.ISerializable, ISensorEventListener
 	{
-		private static readonly object _syncLock = new object();
-		private static readonly object _queueLock = new object();
+		private static readonly object _syncLock = new object(); // Acts like a semaphore
+		private static readonly object _queueLock = new object();// Acts like a semaphore
 		private SensorManager _sensorManager;
 		private TextView _accValues;
 		private TextView _gforceView;
@@ -30,7 +30,6 @@ namespace Gigabyke
 		private Queue<Events> _eventQueue = new Queue<Events>();
 
 		private double _thresholdMeter;
-		private double _thresholdMeterBackup;
 		private double _calibrMax;
 		private double _factor;
 		private bool _calibrationActive = false;
@@ -39,7 +38,6 @@ namespace Gigabyke
 		private bool _stopAcc = false;
 		private bool _writeAccess = true;
 
-		private int _counter;
 		private long _elapsed;
 		private Stopwatch _sw;
 		private Stopwatch _threadWatch;
@@ -53,12 +51,10 @@ namespace Gigabyke
 			this._accValues = values;
 			this._gforceView = gforce;
 			this._thresholdMeter = 1;
-			this._thresholdMeterBackup = 1;
 			this._max = max;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
 			this._sw = new Stopwatch();
-			this._counter = 0;
 			this._elapsed = 0;
 			this._threadWatch = new Stopwatch ();
 			_lage = 0;
@@ -69,15 +65,13 @@ namespace Gigabyke
 		{
 			this._sensorManager = manager;
 			this._thresholdMeter = 13;
-			this._thresholdMeterBackup = 13;
 			this._calibrationActive = true;
 			this._hasVibrator = hasVibrator;
 			this._factor = 0;
 		}
 
 		/*
-		 * Accelerometer
-		 * Wordt opgeroepen wanneer de nauwkeurigheid van de sensor wijzigt
+		 * Called when the accuracy of the sensor had changed
 		 */
 		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
 		{
@@ -85,21 +79,31 @@ namespace Gigabyke
 		}
 
 		/*
-		 * Accelerometer
-		 * Wordt opgeroepen wanneer de sensordata is gewijzigd
+		 * Called when the value of the sensor has changed
 		 */
 		public void OnSensorChanged(SensorEvent e)
 		{
+			// Lock the object such that only this method can modify some values
 			lock (_syncLock)
 			{
 				if (_calibrationActive == false) {
+					
+					// If the calibration is not active, but the sensor hasn't been calibrated yet:
+					// Inform the user that he has to calibrate the device first
 					if (_factor == 0) {
 						_accValues.Text = "Eerst kalibreren aub";
 						_gforceView.Text = "";
 					} else {
+						
+						// Otherwise: process the value
 						processAlgorithm (e.Values [0], e.Values [1], e.Values [2]);
 					}
 				} else {
+
+					// If the calibration process is active:
+					// Calculate the G-force on the device
+					// When that force is greater than the highest measurement:
+					// Set that measurement as the highest one
 					double g = Math.Sqrt (
 						Math.Pow (e.Values [0], 2) + 
 						Math.Pow (e.Values [1], 2) + 
@@ -111,11 +115,22 @@ namespace Gigabyke
 			}
 		}
 
+		/*
+		 * Called when the accelerometer has to stop measuring
+		 * The value _stopAcc is set to TRUE such that the running threads
+		 * 		will be stopped
+		 */ 
 		public void stopAccelerometer() {
 			_stopAcc = true;
 			_sensorManager.UnregisterListener (this);
 		}
 
+		/*
+		 * Called when the accelerometer has to start measuring
+		 * The value _stopAcc is set to FALSE such that the threads can be started.
+		 * A listener is registred in the sensormanager so the method "OnValueChanged" 
+		 * 		will be called.
+		 */
 		public void startAccelerometer() {
 			Console.WriteLine ("Accelerometer starten");
 			_stopAcc = false;
@@ -123,6 +138,7 @@ namespace Gigabyke
 				_sensorManager.GetDefaultSensor (SensorType.Accelerometer),
 				SensorDelay.Ui);
 
+			// If the calibration process is not active: restart the stopwatch and start the threads
 			if (!_calibrationActive) {
 				_sw.Restart ();
 				executeThread ();
@@ -131,61 +147,94 @@ namespace Gigabyke
 			Console.WriteLine ("Accelerometer gestart");
 		}
 
+		/*
+		 *  Setter for _factor
+		 */
 		public void setFactor(double factor) {
 			this._factor = factor;
 		}
 
+		/*
+		 *  Setter for _thresholdMeter
+		 */
 		public void setThreshold(double thresh) {
 			this._thresholdMeter = thresh;
-			this._thresholdMeterBackup = thresh;
 		}
 
+		/*
+		 *  The calibration process
+		 */
 		public double calibrate() {
+
+			// Get the milliseconds at the start of the process
 			double ticksStart = Java.Lang.JavaSystem.CurrentTimeMillis();
 			double maxG = 0;
 			double mean = 0;
 
 
 			for (int i = 1; i <= 5; i++) {
-				do {
 
+				// The highest measurement will be set as the maximum
+				// 		if it's higher than the previous maximum
+				// Run this loop for 1 second
+				do {
 					if(maxG < _calibrMax)
 						maxG = _calibrMax;
 
 				} while((ticksStart + 1000 * i) > Java.Lang.JavaSystem.CurrentTimeMillis ());
+
+				// Summation for calculating the mean of the 5 highest measurements
 				mean += maxG;
 				maxG = 0;
 				if(_hasVibrator)
 					CrossVibrate.Current.Vibration (100);
 			}
 
+			// When the 5 seconds have elapsed: vibrate to inform the user that the calibration process
+			// has ended
 			if(_hasVibrator)
 				CrossVibrate.Current.Vibration (500);
+
+			// Return the calculated mean value
 			return mean/5;
 
 		}
 
 		/*
-		 * Algoritme om putten in het wegdek te detecteren
+		 *  Called when the value of the accelerometer has changed, 
+		 * 		to process the values of that meter
 		 */
 		private void processAlgorithm(float e1, float e2, float e3) {
-			double newG = (Math.Sqrt (Math.Pow (e1, 2) + Math.Pow (e2, 2) + Math.Pow (e3, 2)) - 9.81) * _factor;
-			// Bereken de newG die vergeleken moet worden met de threshold
-			double tempTreshold = _thresholdMeter;
 
+			// Calculate the value on a scale from 0 to 20
+			// This ensures that every smartphone uses the same scale
+			double newG = (Math.Sqrt (Math.Pow (e1, 2) + Math.Pow (e2, 2) + Math.Pow (e3, 2)) - 9.81) * _factor;
+
+			// Print this values to the user interface
 			_accValues.Text = string.Format ("Waardes: x={0:f}, y={1:f}, z={2:f}", e1, e2, e3);
 			_gforceView.Text = string.Format ("G Force: {0:f}", newG);
 
-			_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
 			if (newG > _thresholdMeter) {
 
+				// Restart _threadWatch and get the current time in milliseconds
 				_threadWatch.Restart ();
+				_elapsed = Java.Lang.JavaSystem.CurrentTimeMillis ();
 
-				Console.WriteLine ("STOPWATCH: Restart");
+				// Lock the object to ensure that nothing can modify the queue during the process
 				lock (_queueLock) {
+
+					// Generate a new event with:
+					// 		ID = 1 (ID of an accelerometer event)
+					//		Elapsed milliseconds
+					//		Magnitude
 					events = new Events (1, _elapsed, newG);
+
+					// Place that event in the queue
 					_eventQueue.Enqueue (events);
-					Monitor.Pulse (_queueLock);
+
+					// Notify every 
+					Monitor.PulseAll(_queueLock);
+
 				}
 
 				if (_writeAccess) {
