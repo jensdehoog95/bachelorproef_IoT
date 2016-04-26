@@ -32,9 +32,10 @@ namespace Gigabyke
 
 		/*
 		 * GPS
-		 * Wordt opgeroepen wanneer de locatie wijzigt
+		 * get called when the location changes.
 		 */
 		public void OnLocationChanged(Location location) {
+			//Try to get the location
 			_currentLocation = location;
 			if (_currentLocation == null)
 			{
@@ -42,62 +43,66 @@ namespace Gigabyke
 			}
 			else
 			{
-				_locationText.Text = string.Format("Breedte: {0:f6} - Lengte: {1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
-				// Await: wacht totdat de functie 'ReverseGeocodeCurrentLocation' zijn waarde heeft teruggegeven.
-				//Address address = await ReverseGeocodeCurrentLocation();
-				//DisplayAddress(address);
+				string locText = string.Format("Breedte: {0:f6} - Lengte: {1:f6}", _currentLocation.Latitude, _currentLocation.Longitude);
+				_locationText.Text = locText;
+
+				//Write the coordinates to a file.
+				var path =  global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+				FileStream fs = null;
+				if(!File.Exists(path.ToString() + "/gps.txt")) {					
+					fs = File.Create(path.ToString() + "/gps.txt");
+				} else {
+					fs = File.Open (path.ToString()+ "/gps.txt",FileMode.Append);
+				}
+				StreamWriter sw = new StreamWriter(fs);
+				sw.Write(Java.Lang.JavaSystem.CurrentTimeMillis ());
+				sw.Write (": ");
+				sw.WriteLine(locText);
+				sw.Flush();
+				sw.Close();
 			}
 		}
 
 		/*
-		 * Methodes die aanwezig zijn, maar niet geïmplementeerd zijn.
+		 * Methodes that there are but not implemented.
 		 */
 		public void OnProviderDisabled(string provider) {}
 		public void OnProviderEnabled(string provider) {}
-		public void OnStatusChanged(string provider, Availability status, Bundle extras) {	
-			//var linearLayout = FindViewById (Resource.Id.sn);
-
-		}
+		public void OnStatusChanged(string provider, Availability status, Bundle extras) {}
 
 		/*
 		 * GPS
-		 * Initialiseer de locationmanager
+		 * Initialize the locationmanager.
 		 */
 		public void InitializeLocationManager()
 		{
-			// Maak een nieuw criterium aan voor de location service. De nauwkeurigheid moet fijn zijn.
+			//Make a new criterion for the location service. The accuracy must be Fine.
 			Criteria criteriaForLocationService = new Criteria
 			{
 				Accuracy = Accuracy.Fine
 			}; 
 
-			// Maak een lijst aan met alle acceptabele location providers
+			//Make a list with all acceptable location providers.
 			IList<string> acceptableLocationProviders = _locationManager.GetProviders(criteriaForLocationService, true);
 
 			if (acceptableLocationProviders.Any())
 			{
-				// Als er location providers in de lijst staan: neem de eerste.
+				//if there are location providers in the list: take the first one.
 				_locationProvider = acceptableLocationProviders.First();
-				//Snackbar.Make (FindViewById (Resource.Id.center), _locationProvider, Snackbar.LengthLong)
-				//	.SetAction ("OK", action => {
-				//	})
-				//	.Show ();
 			}
 			else
 			{
-				// Als er geen location providers zijn: geef een lege string.
+				//if there aren't location providers: give an empty string.
 				_locationProvider = string.Empty;
 			}
-
-			// Schrijf de gebruikte location provider naar de debug console
-			//Log.Debug(TAG, "Using " + _locationProvider + ".");
-
 		}
 
+		//Stops the GPS.
 		public void stopGPS() {
 			_locationManager.RemoveUpdates (this);
 		}
 
+		//Starts the GPS.
 		public void startGPS() {
 			_locationManager.RequestLocationUpdates (_locationProvider, 0, 0, this);
 		}
