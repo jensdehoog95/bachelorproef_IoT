@@ -38,17 +38,23 @@ namespace Gigabyke
 		static readonly int REQUEST_COARSELOCATION = 0;
 		static readonly int REQUEST_FINELOCATION = 1;
 		static readonly int REQUEST_INTERNET = 2;
+		static readonly int REQUEST_WRITE_EXTERNAL_STORAGE = 3;
+		static readonly int REQUEST_READ_EXTERNAL_STORAGE = 4;
 
+		//Set the permissions that are needed.
 		static string[] PERMISSIONS_CONTACT = {
 			Android.Manifest.Permission.AccessCoarseLocation,
 			Android.Manifest.Permission.AccessFineLocation,
-			Android.Manifest.Permission.Internet
+			Android.Manifest.Permission.Internet,
+			Android.Manifest.Permission.WriteExternalStorage,
+			Android.Manifest.Permission.ReadExternalStorage
 		};
 
 		protected override void OnCreate (Bundle savedInstanceState)
 		{
 			base.OnCreate (savedInstanceState);
 
+			layout = null;
 			// Set our view from the "main" layout resource
 			SetContentView (Resource.Layout.Main);
 
@@ -71,6 +77,7 @@ namespace Gigabyke
 			Vibrator vibrator = (Vibrator)GetSystemService (Context.VibratorService);
 			_hasVibrator = vibrator.HasVibrator;
 
+			//Setup slider
 			_slider.ProgressChanged += delegate(object sender, SeekBar.ProgressChangedEventArgs e) {
 
 				double step = e.Progress/stepSeekBar;
@@ -83,20 +90,16 @@ namespace Gigabyke
 
 			_calibrateButton.Click += (sender, e) => {
 
-				//accelerometer.setFactor(0.82913);
-				accelerometer.setFactor(0.2189);
-				/*
 				accelerometer.stopAccelerometer();
 
-				// Maak een overgang klaar naar de nieuwe activiteit
+				//Make ready a transition to a new activity.
 				var second = new Android.Content.Intent(this,typeof(CalibrationActivity));
 
-				// Geef aan de overgang een request nummer mee, in dit geval '1'
+				//Give a transition a request number. In this case '1'.
 				StartActivityForResult(second,1);
 
-				// Overschrijf de overgangsanimatie met een nieuwe animatie
+				//Overwrite the transitionanimation with a new animation.
 				OverridePendingTransition(Resource.Animation.abc_popup_enter,Resource.Animation.abc_slide_out_bottom);
-				*/
 			};
 
 			accelerometer = new Accelerometer ((SensorManager)GetSystemService (SensorService),_accValues, _accText, _maxText, _hasVibrator);
@@ -108,24 +111,25 @@ namespace Gigabyke
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data) {
 			if (resultCode == Result.Ok && requestCode == 1) {
 
-				// Verkrijg de factor die door de tweede activiteit wordt meegegeven
+				//Get the factor that is given through the second activity.
 				double factor = data.GetDoubleExtra ("CalibrationFactor", 0);
 
-				// Stel die factor in in de accelerometer
+				// Use that factor to set the accelerometer.
 				accelerometer.setFactor (factor);
 
-				// Start de meter
+				// Start the accelerometer.
 				accelerometer.startAccelerometer ();
 			}
 		}
 
+		//Pause the app.
 		protected override void OnPause ()
 		{
 			base.OnPause ();
-			//accelerometer.stopAccelerometer();
 			gps.stopGPS ();
 		}
 
+		//Resume the app.
 		protected override void OnResume ()
 		{
 			base.OnResume ();
@@ -137,6 +141,7 @@ namespace Gigabyke
 			
 		}
 
+		//Check if permissions are granted.
 		public void initLocationManager() {
 			if (ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.AccessCoarseLocation) != (int)Android.Content.PM.Permission.Granted) {
 
@@ -154,6 +159,17 @@ namespace Gigabyke
 				RequestInternetPermission ();
 			}
 
+			if (ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.WriteExternalStorage) != (int)Android.Content.PM.Permission.Granted) {
+
+				// WriteExternalStorage permission has not been granted
+				RequestWriting ();
+			}
+			if (ActivityCompat.CheckSelfPermission (this, Android.Manifest.Permission.ReadExternalStorage) != (int)Android.Content.PM.Permission.Granted) {
+
+				// ReadExternalStorage permission has not been granted
+				RequestReading ();
+			}
+
 			gps.InitializeLocationManager ();
 		}
 
@@ -164,20 +180,13 @@ namespace Gigabyke
 		*/
 		void RequestCoarsePermission ()
 		{
-			//Log.Info (TAG, "COARSE permission has NOT been granted. Requesting permission.");
-
 			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.AccessCoarseLocation)) {
-				// Provide an additional rationale to the user if the permission was not granted
-				// and the user would benefit from additional context for the use of the permission.
-				// For example if the user has previously denied the permission.
-				//Log.Info (TAG, "Displaying COARSE permission rationale to provide additional context.");
-
 				Snackbar.Make (layout, Resource.String.hello,
 					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
 						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessCoarseLocation }, REQUEST_COARSELOCATION);
 					})).Show ();
 			} else {
-				// Camera permission has not been granted yet. Request it directly.
+				// AccessCoarseLocation permission has not been granted yet. Request it directly.
 				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessCoarseLocation }, REQUEST_COARSELOCATION);
 			}
 		}
@@ -189,21 +198,50 @@ namespace Gigabyke
 		*/
 		void RequestFinePermission ()
 		{
-			//Log.Info (TAG, "Fine permission has NOT been granted. Requesting permission.");
-
 			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.AccessCoarseLocation)) {
-				// Provide an additional rationale to the user if the permission was not granted
-				// and the user would benefit from additional context for the use of the permission.
-				// For example if the user has previously denied the permission.
-				//Log.Info (TAG, "Displaying Fine permission rationale to provide additional context.");
-
 				Snackbar.Make (layout, Resource.String.hello,
 					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
 						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessFineLocation }, REQUEST_FINELOCATION);
 					})).Show ();
 			} else {
-				// Camera permission has not been granted yet. Request it directly.
+				// AccessFineLocation permission has not been granted yet. Request it directly.
 				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.AccessFineLocation }, REQUEST_FINELOCATION);
+			}
+		}
+
+		/**
+     	* Requests the WriteExternalStorage permission.
+		* If the permission has been denied previously, a SnackBar will prompt the user to grant the
+		* permission, otherwise it is requested directly.
+		*/
+		void RequestWriting ()
+		{
+			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.WriteExternalStorage)) {
+				Snackbar.Make (layout, Resource.String.hello,
+					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
+						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.WriteExternalStorage }, REQUEST_WRITE_EXTERNAL_STORAGE);
+					})).Show ();
+			} else {
+				// WriteExternalStorage permission has not been granted yet. Request it directly.
+				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.WriteExternalStorage}, REQUEST_WRITE_EXTERNAL_STORAGE);
+			}
+		}
+
+		/**
+     	* Requests the ReadExternalStorage permission.
+		* If the permission has been denied previously, a SnackBar will prompt the user to grant the
+		* permission, otherwise it is requested directly.
+		*/
+		void RequestReading ()
+		{
+			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.ReadExternalStorage)) {
+				Snackbar.Make (layout, Resource.String.hello,
+					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
+						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.ReadExternalStorage }, REQUEST_READ_EXTERNAL_STORAGE);
+					})).Show ();
+			} else {
+				// ReadExternalStorage permission has not been granted yet. Request it directly.
+				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.ReadExternalStorage }, REQUEST_READ_EXTERNAL_STORAGE);
 			}
 		}
 
@@ -214,25 +252,16 @@ namespace Gigabyke
 		*/
 		void RequestInternetPermission ()
 		{
-			//Log.Info (TAG, "Internet permission has NOT been granted. Requesting permission.");
-
 			if (ActivityCompat.ShouldShowRequestPermissionRationale (this, Android.Manifest.Permission.AccessCoarseLocation)) {
-				// Provide an additional rationale to the user if the permission was not granted
-				// and the user would benefit from additional context for the use of the permission.
-				// For example if the user has previously denied the permission.
-				//Log.Info (TAG, "Displaying Intenet permission rationale to provide additional context.");
-
 				Snackbar.Make (layout, Resource.String.hello,
 					Snackbar.LengthIndefinite).SetAction (Resource.String.hello, new Action<View> (delegate(View obj) {
 						ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.Internet }, REQUEST_INTERNET);
 					})).Show ();
 			} else {
-				// Camera permission has not been granted yet. Request it directly.
+				// Internet permission has not been granted yet. Request it directly.
 				ActivityCompat.RequestPermissions (this, new String[] { Android.Manifest.Permission.Internet }, REQUEST_INTERNET);
 			}
 		}
-
-
 	}
 }
 

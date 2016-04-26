@@ -15,16 +15,19 @@ namespace Gigabyke
 			this._magnitude = mag;
 		}
 
+		//Get the number of milliseconds that are passed.
 		public long getMilliseconds()
 		{
 			return _milliseconds;
 		}
 
+		//Get the ID of the event.
 		public double getID()
 		{
 			return _id;
 		}
 
+		//Get the magnitude of the measurement.
 		public double getMagnitude()
 		{
 			return _magnitude;
